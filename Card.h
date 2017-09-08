@@ -15,7 +15,7 @@ signals:
 public slots:
 
 public:
-    int group;
+    int type;
     int rarity;
     bool loyalty;
     int lane;
@@ -25,6 +25,7 @@ public:
     int position;
     int number;
     int sequence;
+    int cardNumber;
 };
 
 #endif // CARD_H

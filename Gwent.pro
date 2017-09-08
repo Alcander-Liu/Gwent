@@ -30,16 +30,21 @@ SOURCES += \
     Player.cpp \
     Field.cpp \
     Lane.cpp \
-    Card.cpp
+    Card.cpp \
+    Account.cpp \
+    Deck.cpp
 
 HEADERS += \
         MainWindow.h \
-    DeckControll.h \
     Player.h \
     Field.h \
     Lane.h \
     Card.h \
-    CardDataBase.h
+    CardDataBase.h \
+    Account.h \
+    Deck.h \
+    DeckControl.h
 
 FORMS += \
-        MainWindow.ui
+        MainWindow.ui \
+    DeckControl.ui

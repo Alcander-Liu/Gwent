@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 #include "Card.h"
-#include "DeckControll.h"
+#include "DeckControl.h"
 #include "Field.h"
 #include "Lane.h"
 #include "Player.h"
@@ -26,15 +26,16 @@ private:
 public:
     Player player;
     Player opponent;
-    DeckControl deckControl;
+
     int status;
+    DeckControl deckControl;
 //    MutiModeControl mutiModeControl;
 //    MenuControl menuControl;
  //   AIModeControl aIModeControl;
  //   SettingControl settingControl;
 
-public:
-    goToDeck();
+public slots:
+    void goToDeck();
 
 };
 
