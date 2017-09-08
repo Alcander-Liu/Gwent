@@ -1,6 +1,6 @@
 #include "Card.h"
 
-Card::Card(QWidget *parent) : QWidget(parent)
+Card::Card(QPixmap pixmap,QWidget *parent) : QWidget(parent), QGraphicsPixmapItem(pixmap)
 {
 
 }

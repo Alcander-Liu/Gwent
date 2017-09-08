@@ -5,12 +5,11 @@
 #include <QPushButton>
 #include <QGraphicsPixmapItem>
 
-class Card001: public Card, public QGraphicsPixmapItem // Vran Warrior
+class Card001: public Card // Vran Warrior
 {
 public:
     Card001(QWidget *parent = nullptr):
-        Card(parent),
-        QGraphicsPixmapItem(QPixmap::fromImage(QImage((":/card/Gwent Cards/001_VranWarrior.png"))))
+        Card(QPixmap::fromImage(QImage((":/card/Gwent Cards/001_VranWarrior.png"))), parent)
     {
         level = 3; //Bronze
         rarity = 2; //Rare

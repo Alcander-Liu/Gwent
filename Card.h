@@ -3,12 +3,13 @@
 
 #include <QObject>
 #include <QWidget>
-
-class Card : public QWidget
+#include <QGraphicsPixmapItem>
+#include <QPixmap>
+class Card : public QWidget, public QGraphicsPixmapItem
 {
     Q_OBJECT
 public:
-    explicit Card(QWidget *parent = nullptr);
+    explicit Card(QPixmap pixmap, QWidget *parent = nullptr);
 
 signals:
 

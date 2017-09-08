@@ -63,9 +63,10 @@ void DeckControl::loadDeck(int deckNumber)
        // view.show();
 
   //      QImage image(":/card/Gwent Cards/001_VranWarrior.png");
-  //      QGraphicsPixmapItem *item = new QGraphicsPixmapItem(QPixmap::fromImage(image));
-        Card001 *card = new Card001(this);
+      // QGraphicsPixmapItem *item = new QGraphicsPixmapItem();
+        Card *card = new Card001(this);
         scene.addItem(card);
+        card->setPos(500,500);
         view.setSceneRect(0,0,1800,1000);
         mainWindow->setCentralWidget(&view);
         view.show();
