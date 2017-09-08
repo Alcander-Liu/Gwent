@@ -15,7 +15,7 @@ signals:
 public slots:
 
 public:
-    int type;
+    int level;
     int rarity;
     bool loyalty;
     int lane;

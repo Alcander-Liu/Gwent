@@ -6,13 +6,49 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>667</width>
-    <height>491</height>
+    <width>647</width>
+    <height>473</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <widget class="QPushButton" name="newDeckButton">
+   <property name="geometry">
+    <rect>
+     <x>220</x>
+     <y>140</y>
+     <width>201</width>
+     <height>56</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>36</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>New Deck</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="goBackButton">
+   <property name="geometry">
+    <rect>
+     <x>490</x>
+     <y>410</y>
+     <width>131</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>15</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Go Beck</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>

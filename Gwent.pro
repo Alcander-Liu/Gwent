@@ -47,4 +47,8 @@ HEADERS += \
 
 FORMS += \
         MainWindow.ui \
-    DeckControl.ui
+    DeckControl.ui \
+    deckcontrol_2.ui
+
+RESOURCES += \
+    cardimages.qrc

@@ -7,6 +7,12 @@
 #include "Field.h"
 #include "Lane.h"
 #include "Player.h"
+#include "QStackedWidget"
+#include <QGraphicsScene>
+#include <QGraphicsView>
+#include <QGraphicsPixmapItem>
+#include <QGraphicsItem>
+#include <QPixmap>
 
 namespace Ui {
 class MainWindow;
@@ -26,9 +32,11 @@ private:
 public:
     Player player;
     Player opponent;
-
+    QGraphicsScene *scene;
+    QGraphicsView *view;
     int status;
-    DeckControl deckControl;
+    DeckControl *deckControl;
+    Account *account;
 //    MutiModeControl mutiModeControl;
 //    MenuControl menuControl;
  //   AIModeControl aIModeControl;
