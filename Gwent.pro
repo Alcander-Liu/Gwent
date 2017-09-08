@@ -25,10 +25,21 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        MainWindow.cpp
+        MainWindow.cpp \
+    DeckControl.cpp \
+    Player.cpp \
+    Field.cpp \
+    Lane.cpp \
+    Card.cpp
 
 HEADERS += \
-        MainWindow.h
+        MainWindow.h \
+    DeckControll.h \
+    Player.h \
+    Field.h \
+    Lane.h \
+    Card.h \
+    CardDataBase.h
 
 FORMS += \
         MainWindow.ui

@@ -1,0 +1,8 @@
+#ifndef CARDDATABASE_H
+#define CARDDATABASE_H
+
+class card001
+
+
+
+#endif // CARDDATABASE_H
