@@ -6,6 +6,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    //ui->menuWidget->setFixedSize(QSize(500,500));
+    //this->setGeometry(0,0,500,500);
+   // ui->menuWidget->setStyleSheet("{ width: 500px; height: 500px; }");
     this->setCentralWidget(ui->menuWidget);
 /*
     scene = new QGraphicsScene(ui->menuWidget);

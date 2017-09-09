@@ -25,14 +25,18 @@ private:
     Ui::Form *ui;
     Account *account;
     QMainWindow *mainWindow;
-
+    Card *card[28];
 
 public slots:
     void goBack();
     void loadDeck(int);
 public:
     void run();
-    void generateAllCards(Card *card[]);
+    void generateAllCards();
+    void setCardsVisible(int index);
+private:
+    int cardsVisibleIndex;
+    
 };
 
 #endif // DECKCONTROL_H

@@ -1,5 +1,32 @@
 <RCC>
     <qresource prefix="/card">
         <file>Gwent Cards/001_VranWarrior.png</file>
+        <file>Gwent Cards/001_FisrtLight.png</file>
+        <file>Gwent Cards/002_BitingFrost.png</file>
+        <file>Gwent Cards/003_ImpenetrableFog.png</file>
+        <file>Gwent Cards/004_TorrentialRain.png</file>
+        <file>Gwent Cards/005_Lacerate.png</file>
+        <file>Gwent Cards/007_CommandersHorn.png</file>
+        <file>Gwent Cards/008_BekkersTwistedMirror.png</file>
+        <file>Gwent Cards/009_GeraltIgni.png</file>
+        <file>Gwent Cards/010_Dagon.png</file>
+        <file>Gwent Cards/011_Foglet.png</file>
+        <file>Gwent Cards/012_Geels.png</file>
+        <file>Gwent Cards/013_CelaenoHarpy.png</file>
+        <file>Gwent Cards/014_Harpy.png</file>
+        <file>Gwent Cards/015_WoodlandSpirit.png</file>
+        <file>Gwent Cards/016_EarthElemental.png</file>
+        <file>Gwent Cards/017_CroneWeavess.png</file>
+        <file>Gwent Cards/018_CroneWhipess.png</file>
+        <file>Gwent Cards/019_CroneBrewess.png</file>
+        <file>Gwent Cards/020_Archgriffin.png</file>
+        <file>Gwent Cards/021_Nithral.png</file>
+        <file>Gwent Cards/022_Caranthir.png</file>
+        <file>Gwent Cards/023_Frightener.png</file>
+        <file>Gwent Cards/024_UnseenElder.png</file>
+        <file>Gwent Cards/026_VranWarrior.png</file>
+        <file>Gwent Cards/006_FullMoonPotion.png</file>
+        <file>Gwent Cards/025_Arachas.png</file>
+        <file>Gwent Cards/027_ArachasBehemoth.png</file>
     </qresource>
 </RCC>
