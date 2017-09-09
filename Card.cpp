@@ -4,3 +4,10 @@ Card::Card(QPixmap pixmap,QWidget *parent) : QWidget(parent), QGraphicsPixmapIte
 {
 
 }
+
+void Card::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    emit cardPressed(this);
+}
+
+

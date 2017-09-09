@@ -6,11 +6,10 @@
 #include <QPixmap>
 #include <QGraphicsPixmapItem>
 
-DeckControl::DeckControl(QMainWindow *mainWindow, Account *account, QWidget *parent) :
+DeckControl::DeckControl(Account *account, QWidget *parent) :
     QWidget(parent)
 {
     this->account = account;
-    this->mainWindow = mainWindow;
 }
 
 
@@ -39,13 +38,13 @@ void DeckControl::run()
     m->setMapping(ui->newDeckButton, 0);
 
 
-    mainWindow->setCentralWidget(this);
+    //mainWindow->setCentralWidget(this);
     this->show();
     QEventLoop loop;
     connect(ui->goBackButton, SIGNAL(clicked(bool)), &loop, SLOT(quit()));
     connect(m, SIGNAL(mapped(int)), this, SLOT(loadDeck(int)));
     loop.exec();
-
+    this->hide();
 }
 
 void DeckControl::goBack()
@@ -56,40 +55,45 @@ void DeckControl::goBack()
 
 void DeckControl::loadDeck(int deckNumber)
 {
+    oneCardIsSelected = false;
+
+    QGraphicsScene scene(0, 0, 1918, 1078, this);
+    QGraphicsView view(&scene, this);
+
+    view.setGeometry(0, 0, 1920, 1080);
+    view.setStyleSheet(" border-image: url(:/card/Gwent Cards/NewDeck_small.png) ");
+    view.show();
     if(deckNumber == 0)
     {
-        QGraphicsScene scene(mainWindow);
-        QGraphicsView view(&scene);
-       // view.show();
 
-  //      QImage image(":/card/Gwent Cards/001_VranWarrior.png");
-      // QGraphicsPixmapItem *item = new QGraphicsPixmapItem();
-        Card *card[28];
-        generateAllCards(card);
-
+        generateAllCards();
         for(int i = 1; i<28; i++)
         {
             scene.addItem(card[i]);
-            card[i]->setPos(150*i,600);
+            connect(card[i], SIGNAL(cardPressed(Card*)), this, SLOT(cardSelected(Card*)));
         }
+        cardsVisibleIndex = 1;
+        setCardsVisible(cardsVisibleIndex);
 
-  //      card->setFixedSize(QSize( 50, 50));
-        view.setSceneRect(0,0,1600,900);
-        mainWindow->setCentralWidget(&view);
-        view.showFullScreen();
-        view.show();
+        connect(m, SIGNAL(mapped(int)), this, SLOT(laneSelected(int)));
+       // card[1]->setPos(100,100);
+ //     mainWindow->setCentralWidget(&view);
+
+//        view.setSceneRect(0, 0, 1600, 900);
+     //   view.showFullScreen();
+
 
 
         //mainWindow->setCentralWidget();
 
-        QEventLoop loop;
-        loop.exec();
+
 
     }
-
+    QEventLoop loop;
+    loop.exec();
 }
 
-void DeckControl::generateAllCards(Card *card[])
+void DeckControl::generateAllCards()
 {
     card[1] = new Card001(this);
     card[2] = new Card002(this);
@@ -118,4 +122,53 @@ void DeckControl::generateAllCards(Card *card[])
     card[25] = new Card025(this);
     card[26] = new Card026(this);
     card[27] = new Card027(this);
+
+    for(int i = 1; i<28; i++)
+        card[i]->sequence = i;
+}
+
+void DeckControl::setCardsVisible(int index)
+{
+    for(int i = 1; i<28; i++)
+    {
+        card[i]->QGraphicsItem::hide();
+    }
+
+    for(int i = index; i<index+11; i++)
+    {
+        card[i]->QGraphicsItem::show();
+    }
+
+    for(int i = index; i<index+11; i++)
+    {
+        card[i]->setPos(100*i + 340, 740);
+    }
+
+}
+
+void DeckControl::cardSelected(Card *card)
+{
+    if(oneCardIsSelected == false)
+    {
+        if(card->isInDeck == true)
+            retrieveFromDeck(card);
+        else
+        {
+            oneCardIsSelected = true;
+            selectedCard = card;
+        }
+    }
+    else
+        oneCardIsSelected = false;
+}
+
+void DeckControl::landSelected(int lane)
+{
+    if(oneCardIsSelected == true)
+    {
+        if(lane == selectedCard->lane)
+            moveToLane(selectedCard, lane);
+        else if(card[selectedCardSequence] == 0)
+            moveToLane(selectedCard, lane)
+    }
 }

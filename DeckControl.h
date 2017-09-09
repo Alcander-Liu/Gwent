@@ -16,7 +16,7 @@ class DeckControl : public QWidget
 {
     Q_OBJECT
 public:
-    explicit DeckControl(QMainWindow *mainWindow, Account *account, QWidget *parent = 0);
+    explicit DeckControl(Account *account, QWidget *parent = 0);
     ~DeckControl();
 
 signals:
@@ -24,15 +24,27 @@ signals:
 private:
     Ui::Form *ui;
     Account *account;
-    QMainWindow *mainWindow;
+    bool oneCardIsSelected;
+    Card *selectedCard;
 
+public:
+    Card *card[28];
 
 public slots:
     void goBack();
     void loadDeck(int);
+    void cardSelected(Card *);
+    void landSelected(int);
+
 public:
     void run();
-    void generateAllCards(Card *card[]);
+    void generateAllCards();
+    void setCardsVisible(int index);
+    void moveToLane(Card *card, int lane);
+
+private:
+    int cardsVisibleIndex;
+
 };
 
 #endif // DECKCONTROL_H

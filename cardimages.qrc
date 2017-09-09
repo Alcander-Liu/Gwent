@@ -28,5 +28,6 @@
         <file>Gwent Cards/006_FullMoonPotion.png</file>
         <file>Gwent Cards/025_Arachas.png</file>
         <file>Gwent Cards/027_ArachasBehemoth.png</file>
+        <file>Gwent Cards/NewDeck_small.png</file>
     </qresource>
 </RCC>

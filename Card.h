@@ -27,6 +27,13 @@ public:
     int number;
     int sequence;
     int cardNumber;
+
+protected:
+    void mousePressEvent(QGraphicsSceneMouseEvent *event);
+
+signals:
+    void cardPressed(Card *);
+
 };
 
 #endif // CARD_H

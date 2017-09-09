@@ -5,7 +5,7 @@
 #include <QPushButton>
 #include <QGraphicsPixmapItem>
 
-#define SCALE (0.7)
+#define SCALE (0.36)
 
 
 

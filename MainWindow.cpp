@@ -33,10 +33,10 @@ MainWindow::~MainWindow()
 
 void MainWindow::goToDeck()
 {
-    deckControl = new DeckControl(this, account, this);
+    ui->menuWidget->hide();
+
+    deckControl = new DeckControl(account, this);
     deckControl->run();
 
-    ui->setupUi(this);
-    connect(ui->deckButton, SIGNAL(clicked(bool)), this, SLOT(goToDeck()));
-    this->setCentralWidget(ui->menuWidget);
+    ui->menuWidget->show();
 }
