@@ -7,6 +7,8 @@
 #include "Account.h"
 #include "carddatabase.h"
 #include "Card.h"
+#include "Deck.h"
+#include "BattleField.h"
 
 namespace Ui {
 class Form;
@@ -26,21 +28,30 @@ private:
     Account *account;
     bool oneCardIsSelected;
     Card *selectedCard;
+    BattleField *battleField;
+    Deck deckEditing;
+    QGraphicsScene *scene;
+
 
 public:
     Card *card[28];
+    Card *cardInDeck[40];
 
 public slots:
     void goBack();
     void loadDeck(int);
     void cardSelected(Card *);
-    void landSelected(int);
+    void laneSelected(int);
 
 public:
     void run();
     void generateAllCards();
     void setCardsVisible(int index);
-    void moveToLane(Card *card, int lane);
+    void NewToLane(Card *card, int lane);
+
+private:
+    bool checkValidity(Card *card);
+
 
 private:
     int cardsVisibleIndex;

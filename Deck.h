@@ -17,6 +17,15 @@ public slots:
 public:
     int cardAmount;
     std::map<int,int> cardNumber;
+    int goldUsage;
+    int silverUsage;
+public:
+    void makeCopyOf(Deck *deck){
+                     this->cardAmount = deck->cardAmount;
+                   this->cardNumber = deck->cardNumber;
+                   this->goldUsage = deck->goldUsage;
+                   this->silverUsage = deck->goldUsage;
+                  }
 
 };
 

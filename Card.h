@@ -5,11 +5,11 @@
 #include <QWidget>
 #include <QGraphicsPixmapItem>
 #include <QPixmap>
-class Card : public QWidget, public QGraphicsPixmapItem
+class Card : public QObject, public QGraphicsPixmapItem
 {
     Q_OBJECT
 public:
-    explicit Card(QPixmap pixmap, QWidget *parent = nullptr);
+    explicit Card(QPixmap pixmap, QObject *parent = nullptr);
 
 signals:
 
@@ -30,6 +30,12 @@ public:
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
+
+public:
+    virtual Card * makeCopy(QObject *parent = nullptr)
+    {
+        return nullptr;
+    }
 
 signals:
     void cardPressed(Card *);

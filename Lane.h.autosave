@@ -9,9 +9,7 @@ public:
     Lane();
 
 public:
-    Field melee;
-    Field ranged;
-    Field Siege;
+    Field lanes[4];  //1: Melee;  2: Ranged;  3: siege; 0: special;
 };
 
 #endif // LANE_H

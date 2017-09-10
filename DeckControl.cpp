@@ -5,10 +5,12 @@
 #include <QGraphicsView>
 #include <QPixmap>
 #include <QGraphicsPixmapItem>
+using namespace std;
 
 DeckControl::DeckControl(Account *account, QWidget *parent) :
     QWidget(parent)
 {
+    oneCardIsSelected = false;
     this->account = account;
 }
 
@@ -55,10 +57,13 @@ void DeckControl::goBack()
 
 void DeckControl::loadDeck(int deckNumber)
 {
+
+    deckEditing.makeCopyOf(&account->deck[deckNumber]);
     oneCardIsSelected = false;
 
-    QGraphicsScene scene(0, 0, 1918, 1078, this);
-    QGraphicsView view(&scene, this);
+    battleField = new BattleField(this);
+    scene = new QGraphicsScene(0, 0, 1918, 1078, this);
+    QGraphicsView view(scene, this);
 
     view.setGeometry(0, 0, 1920, 1080);
     view.setStyleSheet(" border-image: url(:/card/Gwent Cards/NewDeck_small.png) ");
@@ -69,24 +74,32 @@ void DeckControl::loadDeck(int deckNumber)
         generateAllCards();
         for(int i = 1; i<28; i++)
         {
-            scene.addItem(card[i]);
+            scene->addItem(card[i]);
             connect(card[i], SIGNAL(cardPressed(Card*)), this, SLOT(cardSelected(Card*)));
         }
         cardsVisibleIndex = 1;
         setCardsVisible(cardsVisibleIndex);
 
-        connect(m, SIGNAL(mapped(int)), this, SLOT(laneSelected(int)));
+
        // card[1]->setPos(100,100);
  //     mainWindow->setCentralWidget(&view);
 
 //        view.setSceneRect(0, 0, 1600, 900);
      //   view.showFullScreen();
 
+        QSignalMapper *m = new QSignalMapper;
 
 
         //mainWindow->setCentralWidget();
+        for(int i = 1; i<4; i++)
+        {
+            battleField->lanes[i]->setRect(450, 75+i*135, 1020, 120);
+            scene->addItem(battleField->lanes[i]);
+            connect(battleField->lanes[i], SIGNAL(fieldPressed()), m, SLOT(map()));
+            m->setMapping(battleField->lanes[i], i);
+        }
 
-
+        connect(m, SIGNAL(mapped(int)), this, SLOT(laneSelected(int)));
 
     }
     QEventLoop loop;
@@ -150,8 +163,9 @@ void DeckControl::cardSelected(Card *card)
 {
     if(oneCardIsSelected == false)
     {
-        if(card->isInDeck == true)
-            retrieveFromDeck(card);
+        if(card->parent() == battleField)
+            //retrieveFromDeck(card);
+            ;
         else
         {
             oneCardIsSelected = true;
@@ -162,13 +176,81 @@ void DeckControl::cardSelected(Card *card)
         oneCardIsSelected = false;
 }
 
-void DeckControl::landSelected(int lane)
+void DeckControl::laneSelected(int lane)
 {
     if(oneCardIsSelected == true)
     {
         if(lane == selectedCard->lane)
-            moveToLane(selectedCard, lane);
-        else if(card[selectedCardSequence] == 0)
-            moveToLane(selectedCard, lane)
+            NewToLane(selectedCard, lane);
+        else if(selectedCard->lane == 0)
+            NewToLane(selectedCard, lane);
     }
+}
+
+void DeckControl::NewToLane(Card *card, int lane)
+{
+    if(this->checkValidity(card) == false)
+        return;
+
+    deckEditing.cardAmount ++;
+    deckEditing.cardNumber.insert(pair<int,int>(deckEditing.cardAmount, card->cardNumber));
+
+    Field *tempField = battleField->lanes[lane];
+
+    tempField->card[tempField->cardAmount] = card->makeCopy(battleField);
+    scene->addItem(tempField->card[tempField->cardAmount]);
+    tempField->cardAmount++;
+
+    tempField->adjuctCardsPosition(lane);
+}
+
+
+bool DeckControl::checkValidity(Card *card)
+{
+    if(deckEditing.cardAmount == 40)
+        return false;
+
+    switch(card->level)
+    {
+    case 3:
+    {
+        if(deckEditing.goldUsage == 4)
+            return false;
+        for(auto iter = deckEditing.cardNumber.begin();
+            iter != deckEditing.cardNumber.end();
+            iter++)
+        {
+            if(iter->second == card->cardNumber)
+                return false;
+        }
+    }
+    case 2:
+    {
+        if(deckEditing.silverUsage == 6)
+            return false;
+        for(auto iter = deckEditing.cardNumber.begin();
+            iter != deckEditing.cardNumber.end();
+            iter++)
+        {
+            if(iter->second == card->cardNumber)
+                return false;
+        }
+    }
+    case 1:
+    {
+        int count = 0;
+        for(auto iter = deckEditing.cardNumber.begin();
+            iter != deckEditing.cardNumber.end();
+            iter++)
+        {
+            if(iter->second == card->cardNumber)
+            {
+                count++;
+                if(count == 3)
+                    return false;
+            }
+        }
+    }
+    }
+   return true;
 }

@@ -2,7 +2,7 @@
 #define PLAYER_H
 
 #include "Field.h"
-#include "Lane.h"
+#include "BattleField.h"
 #include "Card.h"
 
 class Player
@@ -12,10 +12,10 @@ public:
 
 public:
     int cardAmount;
-    Field deckInGame;
-    Field graveYard;
-    Field hand;
-    Lane lane;
+ //   Field deckInGame;
+  //  Field graveYard;
+  //  Field hand;
+    BattleField battleField;
     Card *card;
 };
 

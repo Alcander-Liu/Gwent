@@ -29,21 +29,23 @@ SOURCES += \
     DeckControl.cpp \
     Player.cpp \
     Field.cpp \
-    Lane.cpp \
     Card.cpp \
     Account.cpp \
-    Deck.cpp
+    Deck.cpp \
+    BattleField.cpp \
+    Field2.cpp
 
 HEADERS += \
         MainWindow.h \
     Player.h \
     Field.h \
-    Lane.h \
     Card.h \
     CardDataBase.h \
     Account.h \
     Deck.h \
-    DeckControl.h
+    DeckControl.h \
+    BattleField.h \
+    Field2.h
 
 FORMS += \
         MainWindow.ui \

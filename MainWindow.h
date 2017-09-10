@@ -5,7 +5,7 @@
 #include "Card.h"
 #include "DeckControl.h"
 #include "Field.h"
-#include "Lane.h"
+#include "BattleField.h"
 #include "Player.h"
 #include "QStackedWidget"
 #include <QGraphicsScene>

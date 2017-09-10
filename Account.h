@@ -2,6 +2,7 @@
 #define ACCOUNT_H
 
 #include <QObject>
+#include "Deck.h"
 
 class Account : public QObject
 {
@@ -15,7 +16,7 @@ public slots:
 
 public:
     int deckAmount;
-    //Deck deck[5];
+    Deck deck[5];
 };
 
 #endif // ACCOUNT_H
