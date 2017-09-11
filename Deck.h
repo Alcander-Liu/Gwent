@@ -3,6 +3,7 @@
 
 #include <map>
 #include <QObject>
+#include <QMultiMap>
 
 class Deck : public QObject
 {
@@ -16,9 +17,12 @@ public slots:
 
 public:
     int cardAmount;
-    std::map<int,int> cardNumber;
+    QMultiMap<int,int> cardNumber;
     int goldUsage;
     int silverUsage;
+    int bronzeUsage;
+    int leader;
+
 public:
     void makeCopyOf(Deck *deck){
                      this->cardAmount = deck->cardAmount;

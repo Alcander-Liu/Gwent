@@ -33,7 +33,8 @@ SOURCES += \
     Account.cpp \
     Deck.cpp \
     BattleField.cpp \
-    Field2.cpp
+    Field2.cpp \
+    TurnPageButton.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -45,7 +46,8 @@ HEADERS += \
     Deck.h \
     DeckControl.h \
     BattleField.h \
-    Field2.h
+    Field2.h \
+    TurnPageButton.h
 
 FORMS += \
         MainWindow.ui \

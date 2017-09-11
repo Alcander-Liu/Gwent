@@ -5,6 +5,7 @@
 #include <QGraphicsRectItem>
 #include <QWidget>
 #include <QRect>
+#include <QMultiMap>
 
 class Field: public QObject, public QGraphicsRectItem
 {
@@ -15,6 +16,7 @@ public:
 public:
     bool weathered;
     bool selectable;
+    QMultiMap<int, Card*> cardToCardPtr;
     Card *card[40];
     int cardAmount;
 

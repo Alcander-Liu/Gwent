@@ -27,6 +27,8 @@ public:
     int number;
     int sequence;
     int cardNumber;
+    QString remark;
+    QString skill;
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);

@@ -9,6 +9,9 @@
 #include "Card.h"
 #include "Deck.h"
 #include "BattleField.h"
+#include "TurnPageButton.h"
+#include <QLabel>
+#include <QGraphicsView>
 
 namespace Ui {
 class Form;
@@ -31,6 +34,15 @@ private:
     BattleField *battleField;
     Deck deckEditing;
     QGraphicsScene *scene;
+    Card *bigCardWithDetails;
+    QLabel *remark;
+    QLabel *skill;
+    QLabel *goldUsage;
+    QLabel *silverUsage;
+    QLabel *bronzeUsage;
+    QLabel *totalUsage;
+    Card *leader = nullptr;
+    QGraphicsView *view;
 
 
 public:
@@ -43,6 +55,10 @@ public slots:
     void cardSelected(Card *);
     void laneSelected(int);
 
+private slots:
+    void turnLeftPage();
+    void turnRightPage();
+
 public:
     void run();
     void generateAllCards();
@@ -51,7 +67,9 @@ public:
 
 private:
     bool checkValidity(Card *card);
-
+    void showCardDetails(Card *card);
+    void deleteCardDetails();
+    void retrieveFromDeck(Card *card);
 
 private:
     int cardsVisibleIndex;

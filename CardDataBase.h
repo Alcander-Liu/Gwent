@@ -5,7 +5,7 @@
 #include <QPushButton>
 #include <QGraphicsPixmapItem>
 
-#define SCALE (0.36)
+#define SCALE (0.33)
 
 
 
@@ -18,10 +18,11 @@ public:
         level = 1; //Bronze
         rarity = 1; //Common
         loyalty = false; //Not Loyal
-        lane = -1; //None, special
+        lane = 0; //None, special
         power = -1; //None
         cardNumber = 001;
         this->setScale(SCALE);
+
     }
 
     Card * makeCopy(QObject *parent = nullptr)
@@ -124,17 +125,17 @@ public:
 };
 
 
-class Card006: public Card // Full Moon Potion
+class Card006: public Card // Thunderbolt Potion
 {
 public:
     Card006(QObject *parent = nullptr):
-        Card(QPixmap::fromImage(QImage((":/card/Gwent Cards/006_FullMoonPotion.png"))), parent)
+        Card(QPixmap::fromImage(QImage((":/card/Gwent Cards/006_ThunderboltPotion.png"))), parent)
     {
         level = 1; //Bronze
         rarity = 1; //Common
-        loyalty = false; //DisLoyal
+        loyalty = false; //
         lane = 0; //all
-        power = -1; //None
+        power = -1; //Special, None
         cardNumber = 006;
         this->setScale(SCALE);
     }
@@ -156,7 +157,7 @@ public:
         level = 2; //Silver
         rarity = 3; //Epic
         loyalty = false; //None
-        lane = -1; //None, Special
+        lane = 0; //None, Special
         power = -1; //None
         cardNumber = 007;
         this->setScale(SCALE);
@@ -179,7 +180,7 @@ public:
         level = 2; //Silver
         rarity = 3; //Epic
         loyalty = false; //None
-        lane = -1; //None, Special
+        lane = 0; //None, Special
         power = -1; //None
         cardNumber = 8;
         this->setScale(SCALE);
@@ -202,7 +203,7 @@ public:
         level = 3; //Gold
         rarity = 4; //Legendary
         loyalty = true; //Loyal
-        lane = 0; //all
+        lane = -1; //all
         power = -1; //None
         cardNumber = 9;
         this->setScale(SCALE);
@@ -225,7 +226,7 @@ public:
         level = 4; //Leader
         rarity = 4; //Legendary
         loyalty = true; //Loyal
-        lane = 0; //all
+        lane = -1; //all
         power = 6;
         cardNumber = 010;
         this->setScale(SCALE);
@@ -248,7 +249,7 @@ public:
         level = 1; //Bronze
         rarity = 1; //Common
         loyalty = true; //Loyal
-        lane = 0; //all
+        lane = -1; //all
         power = 4;
         cardNumber = 011;
         this->setScale(SCALE);
@@ -271,7 +272,7 @@ public:
         level = 3; //Gold
         rarity = 4; //Legendary
         loyalty = true; //Loyal
-        lane = 0; //all
+        lane = -1; //all
         power = 1;
         cardNumber = 012;
         this->setScale(SCALE);
@@ -294,7 +295,7 @@ public:
         level = 1; //Bronze
         rarity = 1; //Common
         loyalty = true; //Loyal
-        lane = 0; //all
+        lane = -1; //all
         power = 5;
         cardNumber = 013;
         this->setScale(SCALE);
@@ -308,17 +309,17 @@ public:
 };
 
 
-class Card014: public Card // Harpy
+class Card014: public Card // Roach
 {
 public:
     Card014(QObject *parent = nullptr):
-        Card(QPixmap::fromImage(QImage((":/card/Gwent Cards/014_Harpy.png"))), parent)
+        Card(QPixmap::fromImage(QImage((":/card/Gwent Cards/014_Roach.png"))), parent)
     {
-        level = 1; //Bronze
-        rarity = 2; //Rare
+        level = 2; //Silver
+        rarity = 3; //Epic
         loyalty = true; //Loyal
-        lane = 0; //all
-        power = 3;
+        lane = -1; //all
+        power = 4;
         cardNumber = 014;
         this->setScale(SCALE);
     }
@@ -340,7 +341,7 @@ public:
         level = 3; //Gold
         rarity = 4; //Legendary
         loyalty = true; //Loyal
-        lane = 0; //all
+        lane = -1; //all
         power = 5;
         cardNumber = 015;
         this->setScale(SCALE);
@@ -455,7 +456,7 @@ public:
         level = 1; //Bronze
         rarity = 1; //Common
         loyalty = true; //Loyal
-        lane = 0; //all
+        lane = -1; //all
         power = 8;
         cardNumber = 020;
         this->setScale(SCALE);
@@ -469,19 +470,21 @@ public:
 };
 
 
-class Card021: public Card // Nithral
+class Card021: public Card // Wild Hunt Rider
 {
 public:
     Card021(QObject *parent = nullptr):
-        Card(QPixmap::fromImage(QImage((":/card/Gwent Cards/021_Nithral.png"))), parent)
+        Card(QPixmap::fromImage(QImage((":/card/Gwent Cards/021_WildHuntRider.png"))), parent)
     {
-        level = 2; //Silver
-        rarity = 3; //Epic
+        level = 1; //Bronze
+        rarity = 1; //Common
         loyalty = true; //Loyal
-        lane = 0; //all
-        power = 5;
+        lane = -1; //all
+        power = 8;
         cardNumber = 021;
         this->setScale(SCALE);
+        remark = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold>Wild Hunt, Soldier</font>";
+        skill = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold>Increase by 1 the <font color = white><b>Damage</b></font> dealt by Frost on the opposite row.</font> ";
     }
 
     Card * makeCopy(QObject *parent = nullptr)
@@ -501,7 +504,7 @@ public:
         level = 3; //Gold
         rarity = 4; //Legendary
         loyalty = true; //Loyal
-        lane = 0; //all
+        lane = -1; //all
         power = 8;
         cardNumber = 022;
         this->setScale(SCALE);
@@ -524,7 +527,7 @@ public:
         level = 2; //Silver
         rarity = 3; //Epic
         loyalty = false; //Disloyal
-        lane = 0; //all
+        lane = -1; //all
         power = 12;
         cardNumber = 023;
         this->setScale(SCALE);
@@ -547,7 +550,7 @@ public:
         level = 4; //Leader
         rarity = 4; //Legendary
         loyalty = false; //None
-        lane = 0; //all
+        lane = -1; //all
         power = 5;
         cardNumber = 024;
         this->setScale(SCALE);
@@ -592,7 +595,7 @@ public:
         level = 1; //Bronze
         rarity = 2; //Rare
         loyalty = true; //Loyal
-        lane = 0; //all
+        lane = -1; //all
         power = 6;
         cardNumber = 026;
         this->setScale(SCALE);

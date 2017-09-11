@@ -8,12 +8,56 @@ Field::Field(QObject *parent):QObject(parent)
 
 void Field::adjuctCardsPosition(int lane)
 {
-    int centralX = 280;
-    for(int i = 0; i<cardAmount; i++)
+    int centralX = 950;
+    /*if(lane != 0)
+        for(int i = 0; i<cardAmount; i++)
+        {
+            card[i]->setPos(centralX - cardAmount*50 + 100*i, 40 + lane*115);
+        }
+    else
     {
-     //   card[i]->setScale(2.0);
-        card[i]->setPos(centralX - cardAmount*50 + 100*i, 100 + lane*50);
+        if(cardAmount < 11)
+            for(int i = 0; i<cardAmount; i++)
+            {
+                card[i]->setPos(centralX - cardAmount*50 + 100*i, 515);
+            }
+        else
+            for(int i = 0; i<cardAmount; i++)
+            {
+                card[i]->setPos(450 + i*900.0/cardAmount, 515);
+
+            }
+
+    }*/
+
+    int i = 0;
+    Card *temp;
+    if(lane != 0)
+        for(QMultiMap<int, Card*>::iterator iter = cardToCardPtr.begin(); iter != cardToCardPtr.end(); iter++)
+        {
+            temp = iter.value();
+            temp->setPos(centralX - cardAmount*50 + 100*i, 40 + lane*115);
+            i++;
+        }
+    else
+    {
+        if(cardAmount <11)
+            for(QMultiMap<int, Card*>::iterator iter = cardToCardPtr.begin(); iter != cardToCardPtr.end(); iter++)
+            {
+                temp = iter.value();
+                temp->setPos(centralX - cardAmount*50 + 100*i, 515);
+                i++;
+            }
+        else
+            for(QMultiMap<int, Card*>::iterator iter = cardToCardPtr.begin(); iter != cardToCardPtr.end(); iter++)
+            {
+                temp = iter.value();
+                temp->setPos(450 + i*900.0/cardAmount, 515);
+                i++;
+            }
+
     }
+
 }
 
 void Field::mousePressEvent(QGraphicsSceneMouseEvent *event)

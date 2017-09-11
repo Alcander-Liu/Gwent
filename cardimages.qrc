@@ -29,5 +29,8 @@
         <file>Gwent Cards/025_Arachas.png</file>
         <file>Gwent Cards/027_ArachasBehemoth.png</file>
         <file>Gwent Cards/NewDeck_small.png</file>
+        <file>Gwent Cards/006_ThunderboltPotion.png</file>
+        <file>Gwent Cards/014_Roach.png</file>
+        <file>Gwent Cards/021_WildHuntRider.png</file>
     </qresource>
 </RCC>

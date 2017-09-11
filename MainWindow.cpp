@@ -37,6 +37,7 @@ void MainWindow::goToDeck()
 
     deckControl = new DeckControl(account, this);
     deckControl->run();
+    delete deckControl;
 
     ui->menuWidget->show();
 }
