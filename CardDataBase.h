@@ -8,7 +8,6 @@
 #define SCALE (0.33)
 
 
-
 class Card001: public Card // First Light
 {
 public:
@@ -20,7 +19,7 @@ public:
         loyalty = false; //Not Loyal
         lane = 0; //None, special
         power = -1; //None
-        cardNumber = 001;
+        cardNumber = 1;
         this->setScale(SCALE);
 
     }
@@ -44,7 +43,7 @@ public:
         loyalty = false; //DisLoyal
         lane = 0; //all
         power = -1; //None
-        cardNumber = 002;
+        cardNumber = 2;
         this->setScale(SCALE);
     }
 
@@ -67,7 +66,7 @@ public:
         loyalty = false; //DisLoyal
         lane = 0; //all
         power = -1; //None
-        cardNumber = 003;
+        cardNumber = 3;
         this->setScale(SCALE);
     }
 
@@ -90,7 +89,7 @@ public:
         loyalty = false; //DisLoyal
         lane = 0; //all
         power = -1; //None
-        cardNumber = 004;
+        cardNumber = 4;
         this->setScale(SCALE);
     }
 
@@ -113,7 +112,7 @@ public:
         loyalty = false; //DisLoyal, Loyal
         lane = 0; //all
         power = -1; //None
-        cardNumber = 005;
+        cardNumber = 5;
         this->setScale(SCALE);
     }
 
@@ -136,7 +135,7 @@ public:
         loyalty = false; //
         lane = 0; //all
         power = -1; //Special, None
-        cardNumber = 006;
+        cardNumber = 6;
         this->setScale(SCALE);
     }
 
@@ -159,7 +158,7 @@ public:
         loyalty = false; //None
         lane = 0; //None, Special
         power = -1; //None
-        cardNumber = 007;
+        cardNumber = 7;
         this->setScale(SCALE);
     }
 
@@ -228,7 +227,7 @@ public:
         loyalty = true; //Loyal
         lane = -1; //all
         power = 6;
-        cardNumber = 010;
+        cardNumber = 10;
         this->setScale(SCALE);
     }
 
@@ -251,7 +250,7 @@ public:
         loyalty = true; //Loyal
         lane = -1; //all
         power = 4;
-        cardNumber = 011;
+        cardNumber = 11;
         this->setScale(SCALE);
     }
 
@@ -274,7 +273,7 @@ public:
         loyalty = true; //Loyal
         lane = -1; //all
         power = 1;
-        cardNumber = 012;
+        cardNumber = 12;
         this->setScale(SCALE);
     }
 
@@ -297,7 +296,7 @@ public:
         loyalty = true; //Loyal
         lane = -1; //all
         power = 5;
-        cardNumber = 013;
+        cardNumber = 13;
         this->setScale(SCALE);
     }
 
@@ -320,7 +319,7 @@ public:
         loyalty = true; //Loyal
         lane = -1; //all
         power = 4;
-        cardNumber = 014;
+        cardNumber = 14;
         this->setScale(SCALE);
     }
 
@@ -343,7 +342,7 @@ public:
         loyalty = true; //Loyal
         lane = -1; //all
         power = 5;
-        cardNumber = 015;
+        cardNumber = 15;
         this->setScale(SCALE);
     }
 
@@ -366,7 +365,7 @@ public:
         loyalty = true; //Loyal
         lane = 1; //Melee
         power = 6;
-        cardNumber = 016;
+        cardNumber = 16;
         this->setScale(SCALE);
     }
 
@@ -389,7 +388,7 @@ public:
         loyalty = true; //Loyal
         lane = 3; //Siege
         power = 6;
-        cardNumber = 017;
+        cardNumber = 17;
         this->setScale(SCALE);
     }
 
@@ -458,7 +457,7 @@ public:
         loyalty = true; //Loyal
         lane = -1; //all
         power = 8;
-        cardNumber = 020;
+        cardNumber = 20;
         this->setScale(SCALE);
     }
 
@@ -481,7 +480,7 @@ public:
         loyalty = true; //Loyal
         lane = -1; //all
         power = 8;
-        cardNumber = 021;
+        cardNumber = 21;
         this->setScale(SCALE);
         remark = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold>Wild Hunt, Soldier</font>";
         skill = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold>Increase by 1 the <font color = white><b>Damage</b></font> dealt by Frost on the opposite row.</font> ";
@@ -506,7 +505,7 @@ public:
         loyalty = true; //Loyal
         lane = -1; //all
         power = 8;
-        cardNumber = 022;
+        cardNumber = 22;
         this->setScale(SCALE);
     }
 
@@ -529,7 +528,7 @@ public:
         loyalty = false; //Disloyal
         lane = -1; //all
         power = 12;
-        cardNumber = 023;
+        cardNumber = 23;
         this->setScale(SCALE);
     }
 
@@ -552,7 +551,7 @@ public:
         loyalty = false; //None
         lane = -1; //all
         power = 5;
-        cardNumber = 024;
+        cardNumber = 24;
         this->setScale(SCALE);
     }
 
@@ -575,7 +574,7 @@ public:
         loyalty = true; //Loyal
         lane = 2; //Ranged
         power = 3;
-        cardNumber = 025;
+        cardNumber = 25;
         this->setScale(SCALE);
     }
 
@@ -597,7 +596,7 @@ public:
         loyalty = true; //Loyal
         lane = -1; //all
         power = 6;
-        cardNumber = 026;
+        cardNumber = 26;
         this->setScale(SCALE);
     }
 
@@ -620,7 +619,7 @@ public:
         loyalty = true; //Loyal
         lane = 3; //Siege
         power = 6;
-        cardNumber = 027;
+        cardNumber = 27;
         this->setScale(SCALE);
     }
 
@@ -631,5 +630,6 @@ public:
     }
 };
 
+extern Card* newCard( int cardNumber,QObject *parent = nullptr);
 
 #endif // CARDDATABASE_H

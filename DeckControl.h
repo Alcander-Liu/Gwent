@@ -43,6 +43,8 @@ private:
     QLabel *totalUsage;
     Card *leader = nullptr;
     QGraphicsView *view;
+    TurnPageButton *saveAndExit;
+    int deckEditingNumber;
 
 
 public:
@@ -58,6 +60,7 @@ public slots:
 private slots:
     void turnLeftPage();
     void turnRightPage();
+    void saveDeck();
 
 public:
     void run();
@@ -70,6 +73,8 @@ private:
     void showCardDetails(Card *card);
     void deleteCardDetails();
     void retrieveFromDeck(Card *card);
+    void loadCardsInDeck();
+
 
 private:
     int cardsVisibleIndex;

@@ -5,6 +5,7 @@
 #include <QWidget>
 #include <QGraphicsPixmapItem>
 #include <QPixmap>
+
 class Card : public QObject, public QGraphicsPixmapItem
 {
     Q_OBJECT
@@ -38,6 +39,8 @@ public:
     {
         return nullptr;
     }
+
+//    Card * newCard(int cardNumber, QObject *parent = nullptr);
 
 signals:
     void cardPressed(Card *);

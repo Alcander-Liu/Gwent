@@ -17,7 +17,7 @@ public slots:
 
 public:
     int cardAmount;
-    QMultiMap<int,int> cardNumber;
+    QMultiMap<int,int> cardNumberMap;
     int goldUsage;
     int silverUsage;
     int bronzeUsage;
@@ -26,7 +26,7 @@ public:
 public:
     void makeCopyOf(Deck *deck){
                      this->cardAmount = deck->cardAmount;
-                   this->cardNumber = deck->cardNumber;
+                   this->cardNumberMap = deck->cardNumberMap;
                    this->goldUsage = deck->goldUsage;
                    this->silverUsage = deck->goldUsage;
                   }

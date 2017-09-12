@@ -34,7 +34,8 @@ SOURCES += \
     Deck.cpp \
     BattleField.cpp \
     Field2.cpp \
-    TurnPageButton.cpp
+    TurnPageButton.cpp \
+    CardDataBase.cpp
 
 HEADERS += \
         MainWindow.h \

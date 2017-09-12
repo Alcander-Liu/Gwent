@@ -15,15 +15,14 @@ DeckControl::DeckControl(Account *account, QWidget *parent) :
     QSignalMapper *m = new QSignalMapper(this);
 
     QPushButton *pushButton;
-    for(int i = 0; i<account->deckAmount; i++)
+    for(int i = 0; i<5; i++)
     {
         pushButton = new QPushButton(this);
-        pushButton->setText("Deck " + (i+1));
+        pushButton->setText("Deck " + QString::number(i+1));
+        pushButton->setGeometry(900, 300+100*i, 200, 50);
         connect(pushButton, SIGNAL(clicked()), m, SLOT(map()));
-        m->setMapping(pushButton, i+1);
+        m->setMapping(pushButton, i);
     }
-    connect(ui->newDeckButton, SIGNAL(clicked(bool)), m, SLOT(map()));
-    m->setMapping(ui->newDeckButton, 0);
     connect(m, SIGNAL(mapped(int)), this, SLOT(loadDeck(int)));
 
     this->show();
@@ -48,10 +47,15 @@ DeckControl::DeckControl(Account *account, QWidget *parent) :
     connect(left, SIGNAL(buttonPressed()), this, SLOT(turnLeftPage()));
     connect(right, SIGNAL(buttonPressed()), this, SLOT(turnRightPage()));
 
-    goldUsage = new QLabel( view);
-    silverUsage = new QLabel("<font color = white size = 4 face = HalisGR-Bold>" +QString::number(deckEditing.silverUsage)+"</font>", this);
-    bronzeUsage = new QLabel("<font color = white size = 4 face = HalisGR-Bold>" +QString::number(deckEditing.bronzeUsage)+"</font>", this);
-    totalUsage = new QLabel("<font color = white size = 4 face = HalisGR-Bold>" +QString::number(deckEditing.cardAmount)+"</font>", this);
+    saveAndExit = new TurnPageButton(this);
+    saveAndExit->setRect(800, 850, 100, 50);
+    scene->addItem(saveAndExit);
+    connect(saveAndExit, SIGNAL(buttonPressed()), this, SLOT(saveDeck()));
+
+    goldUsage = new QLabel(this);
+    silverUsage = new QLabel(this);
+    bronzeUsage = new QLabel(this);
+    totalUsage = new QLabel(this);
     goldUsage->setGeometry(290, 420, 50, 50);
     silverUsage->setGeometry(290, 340, 50, 50);
     bronzeUsage->setGeometry(300, 280, 50, 50);
@@ -88,7 +92,7 @@ void DeckControl::goBack()
 
 void DeckControl::loadDeck(int deckNumber)
 {
-
+    deckEditingNumber = deckNumber;
     deckEditing.makeCopyOf(&account->deck[deckNumber]);
     oneCardIsSelected = false;
 
@@ -112,23 +116,27 @@ void DeckControl::loadDeck(int deckNumber)
     silverUsage->setText("<font color = white size = 4 face = HalisGR-Bold>" +QString::number(deckEditing.silverUsage)+"</font>");
     bronzeUsage->setText("<font color = white size = 4 face = HalisGR-Bold>" +QString::number(deckEditing.bronzeUsage)+"</font>");
     totalUsage->setText("<font color = white size = 4 face = HalisGR-Bold>" +QString::number(deckEditing.cardAmount)+"</font>");
+    goldUsage->show();
+    silverUsage->show();
+    bronzeUsage->show();
+    totalUsage->show();
 
     cardsVisibleIndex = 1;
     setCardsVisible(cardsVisibleIndex);
 
-
-    if(deckNumber == 0)
-    {
-
-
-
-
-
-
-    }
+    loadCardsInDeck();
 
     QEventLoop loop;
+    connect(saveAndExit, SIGNAL(buttonPressed()), &loop, SLOT(quit()));
     loop.exec();
+
+    delete battleField;
+    delete m;
+    view->hide();
+    goldUsage->hide();
+    silverUsage->hide();
+    bronzeUsage->hide();
+    totalUsage->hide();
 }
 
 void DeckControl::generateAllCards()
@@ -191,7 +199,6 @@ void DeckControl::cardSelected(Card *card)
         if(card->parent() == battleField)
         {
             retrieveFromDeck(card);
-            oneCardIsSelected == false;
         }
         else if(card->level == 4)
         {
@@ -275,7 +282,7 @@ void DeckControl::NewToLane(Card *card, int lane)
         goldUsage->setText("<font color = white size = 4 face = HalisGR-Bold>" +QString::number(deckEditing.goldUsage)+"</font>");
         break;
     }
-    deckEditing.cardNumber.insert(card->cardNumber, 0);
+    deckEditing.cardNumberMap.insert(card->cardNumber, lane);
     //deckEditing.cardNumber.insert(pair<int,int>(deckEditing.cardAmount, card->cardNumber));
 
     Field *tempField = battleField->lanes[lane];
@@ -307,8 +314,8 @@ bool DeckControl::checkValidity(Card *card)
     {
         if(deckEditing.goldUsage == 4)
             return false;
-        for(auto iter = deckEditing.cardNumber.begin();
-            iter != deckEditing.cardNumber.end();
+        for(auto iter = deckEditing.cardNumberMap.begin();
+            iter != deckEditing.cardNumberMap.end();
             iter++)
         {
             if(iter.key() == card->cardNumber)
@@ -320,8 +327,8 @@ bool DeckControl::checkValidity(Card *card)
     {
         if(deckEditing.silverUsage == 6)
             return false;
-        for(auto iter = deckEditing.cardNumber.begin();
-            iter != deckEditing.cardNumber.end();
+        for(auto iter = deckEditing.cardNumberMap.begin();
+            iter != deckEditing.cardNumberMap.end();
             iter++)
         {
             if(iter.key() == card->cardNumber)
@@ -332,8 +339,8 @@ bool DeckControl::checkValidity(Card *card)
     case 1:
     {
         int count = 0;
-        for(auto iter = deckEditing.cardNumber.begin();
-            iter != deckEditing.cardNumber.end();
+        for(auto iter = deckEditing.cardNumberMap.begin();
+            iter != deckEditing.cardNumberMap.end();
             iter++)
         {
             if(iter.key() == card->cardNumber)
@@ -418,8 +425,8 @@ void DeckControl::retrieveFromDeck(Card *card)
                 goldUsage->setText("<font color = white size = 4 face = HalisGR-Bold>" +QString::number(deckEditing.goldUsage)+"</font>");
                 break;
             }
-            auto tempIter = deckEditing.cardNumber.find(card->cardNumber);
-            deckEditing.cardNumber.erase(tempIter);
+            auto tempIter = deckEditing.cardNumberMap.find(card->cardNumber);
+            deckEditing.cardNumberMap.erase(tempIter);
 
             battleField->lanes[card->field]->cardToCardPtr.erase(iter);
             battleField->lanes[card->field]->cardAmount--;
@@ -428,7 +435,28 @@ void DeckControl::retrieveFromDeck(Card *card)
             break;
         }
     }
+}
 
+void DeckControl::saveDeck()
+{
+    account->deck[deckEditingNumber].makeCopyOf(&deckEditing);
+}
 
+void DeckControl::loadCardsInDeck()
+{
 
+    Field *tempField;
+    for(auto iter = deckEditing.cardNumberMap.begin(); iter != deckEditing.cardNumberMap.end(); iter++)
+    {
+        selectedCard = newCard(iter.key(), battleField);
+
+        tempField = battleField->lanes[iter.value()];
+        tempField->cardToCardPtr.insert(selectedCard->cardNumber, selectedCard);
+        scene->addItem(selectedCard);
+        connect(selectedCard, SIGNAL(cardPressed(Card*)), this, SLOT(cardSelected(Card*)));
+        selectedCard->field = iter.value();
+        tempField->cardAmount++;
+    }
+    for(int i = 0; i<4; i++)
+        battleField->lanes[i]->adjuctCardsPosition(i);
 }

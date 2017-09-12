@@ -10,4 +10,6 @@ void Card::mousePressEvent(QGraphicsSceneMouseEvent *event)
     emit cardPressed(this);
 }
 
+//Card * Card::newCard(int cardNumber, QObject *parent = nullptr)
+
 
