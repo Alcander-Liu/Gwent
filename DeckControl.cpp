@@ -127,7 +127,7 @@ void DeckControl::loadDeck(int deckNumber)
     loadCardsInDeck();
 
     QEventLoop loop;
-    connect(saveAndExit, SIGNAL(buttonPressed()), &loop, SLOT(quit()));
+    connect(this, SIGNAL(exit()), &loop, SLOT(quit()));
     loop.exec();
 
     delete battleField;
@@ -439,7 +439,31 @@ void DeckControl::retrieveFromDeck(Card *card)
 
 void DeckControl::saveDeck()
 {
+    if(leader == 0)
+    {
+        QMessageBox *warning = new QMessageBox;
+        warning->setText("A leader must be chosen.");
+        warning->exec();
+        delete warning;
+        saveAndExit->setEnabled(false);
+        saveAndExit->setEnabled(true);
+        return ;
+    }
+    else if(deckEditing.cardAmount < 25)
+    {
+        QMessageBox *warning = new QMessageBox;
+        warning->setText("You need at least 25 cards");
+        warning->exec();
+        delete warning;
+        saveAndExit->setEnabled(false);
+        saveAndExit->setEnabled(true);
+        deckEditing.valid = false;
+        return ;
+    }
+    deckEditing.valid = true;
     account->deck[deckEditingNumber].makeCopyOf(&deckEditing);
+
+    emit exit();
 }
 
 void DeckControl::loadCardsInDeck()
@@ -459,4 +483,13 @@ void DeckControl::loadCardsInDeck()
     }
     for(int i = 0; i<4; i++)
         battleField->lanes[i]->adjuctCardsPosition(i);
+
+    if(deckEditing.leader != 0)
+    {
+        leader = newCard(deckEditing.leader, battleField);
+        scene->addItem(leader);
+        leader->setPos(180, 685);
+        leader->setScale(0.47);
+        leader->show();
+    }
 }

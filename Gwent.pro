@@ -35,7 +35,8 @@ SOURCES += \
     BattleField.cpp \
     Field2.cpp \
     TurnPageButton.cpp \
-    CardDataBase.cpp
+    CardDataBase.cpp \
+    GameControl.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -48,7 +49,8 @@ HEADERS += \
     DeckControl.h \
     BattleField.h \
     Field2.h \
-    TurnPageButton.h
+    TurnPageButton.h \
+    GameControl.h
 
 FORMS += \
         MainWindow.ui \

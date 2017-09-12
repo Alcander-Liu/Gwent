@@ -12,11 +12,12 @@ public:
 
 public:
     int cardAmount;
- //   Field deckInGame;
-  //  Field graveYard;
-  //  Field hand;
+    Field deckInGame;
+    Field graveYard;
+    Field hand;
     BattleField battleField;
     Card *card;
+    Card *bigCardWithDetails;
 };
 
 #endif // PLAYER_H

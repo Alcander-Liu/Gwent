@@ -13,6 +13,7 @@
 #include <QGraphicsPixmapItem>
 #include <QGraphicsItem>
 #include <QPixmap>
+#include "GameControl.h"
 
 namespace Ui {
 class MainWindow;
@@ -36,6 +37,7 @@ public:
     QGraphicsView *view;
     int status;
     DeckControl *deckControl;
+    GameControl *gameControl;
     Account *account;
 //    MutiModeControl mutiModeControl;
 //    MenuControl menuControl;
@@ -44,7 +46,7 @@ public:
 
 public slots:
     void goToDeck();
-
+    void goToMultiMode();
 };
 
 #endif // MAINWINDOW_H

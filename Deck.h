@@ -22,6 +22,7 @@ public:
     int silverUsage;
     int bronzeUsage;
     int leader;
+    bool valid;
 
 public:
     void makeCopyOf(Deck *deck){

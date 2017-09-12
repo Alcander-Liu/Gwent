@@ -12,6 +12,7 @@
 #include "TurnPageButton.h"
 #include <QLabel>
 #include <QGraphicsView>
+#include <QMessageBox>
 
 namespace Ui {
 class Form;
@@ -25,6 +26,7 @@ public:
     ~DeckControl();
 
 signals:
+    void exit();
 
 private:
     Ui::Form *ui;
@@ -61,6 +63,7 @@ private slots:
     void turnLeftPage();
     void turnRightPage();
     void saveDeck();
+
 
 public:
     void run();

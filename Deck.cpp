@@ -7,4 +7,5 @@ Deck::Deck(QObject *parent) : QObject(parent)
     silverUsage = 0;
     bronzeUsage = 0;
     leader = 0;
+    valid = false;
 }
