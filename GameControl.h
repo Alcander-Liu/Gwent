@@ -6,19 +6,30 @@
 #include "Card.h"
 #include <QGraphicsView>
 #include <QLabel>
+#include <QPushButton>
+#include <QSignalMapper>
+#include <QEventLoop>
+#include "Player.h"
 
+namespace Ui {
+class gameControl;
+}
 
 class GameControl : public QWidget
 {
     Q_OBJECT
 public:
-    explicit GameControl(QWidget *parent = nullptr);
+    explicit GameControl(Account *account, QWidget *parent = nullptr);
 
 signals:
 
-public slots:
+private slots:
+    void startGame(int deckNumber);
 
 private:
+    Player *player;
+    Player *opponent;
+    Ui::gameControl *ui;
     Account *account;
     bool oneCardIsSelected;
     Card *selectedCard;
@@ -29,6 +40,11 @@ private:
     QLabel *skill;
     Card *leader = nullptr;
 
+private:
+
+    void buildChooseDeckUI();
+    void initializeDeck(int deckNumber);
+    void startRound(int round);
 };
 
 #endif // GAMECONTROL_H

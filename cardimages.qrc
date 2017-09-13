@@ -32,5 +32,6 @@
         <file>Gwent Cards/006_ThunderboltPotion.png</file>
         <file>Gwent Cards/014_Roach.png</file>
         <file>Gwent Cards/021_WildHuntRider.png</file>
+        <file>Gwent Cards/GameBackground_1080.png</file>
     </qresource>
 </RCC>

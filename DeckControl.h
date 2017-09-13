@@ -77,6 +77,7 @@ private:
     void deleteCardDetails();
     void retrieveFromDeck(Card *card);
     void loadCardsInDeck();
+    void updateUsageLabel();
 
 
 private:

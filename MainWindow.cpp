@@ -46,8 +46,7 @@ void MainWindow::goToDeck()
 void MainWindow::goToMultiMode()
 {
     ui->menuWidget->hide();
-
- //   gameControl = new GameControl(account, this);
+    gameControl = new GameControl(account, this);
     delete gameControl;
 
     ui->menuWidget->show();

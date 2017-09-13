@@ -6,39 +6,50 @@ Field::Field(QObject *parent):QObject(parent)
     weathered = 0;
 }
 
-void Field::adjuctCardsPosition(int lane)
+void Field::addCard(int cardNumber, Card *card)
+{
+    cardToCardPtr.insert(cardNumber, card);
+    cardAmount ++;
+}
+
+void Field::removeCard(Card *card)
+{
+    auto iter = cardToCardPtr.find(card->cardNumber, card);
+    if(iter != cardToCardPtr.end())
+    {
+        cardToCardPtr.erase(iter);
+        cardAmount --;
+    }
+}
+
+void Field::adjustCardsPosition_DeckControl(int fieldType)
 {
     int centralX = 950;
-    /*if(lane != 0)
-        for(int i = 0; i<cardAmount; i++)
-        {
-            card[i]->setPos(centralX - cardAmount*50 + 100*i, 40 + lane*115);
-        }
-    else
-    {
-        if(cardAmount < 11)
-            for(int i = 0; i<cardAmount; i++)
-            {
-                card[i]->setPos(centralX - cardAmount*50 + 100*i, 515);
-            }
-        else
-            for(int i = 0; i<cardAmount; i++)
-            {
-                card[i]->setPos(450 + i*900.0/cardAmount, 515);
-
-            }
-
-    }*/
 
     int i = 0;
     Card *temp;
-    if(lane != 0)
-        for(QMultiMap<int, Card*>::iterator iter = cardToCardPtr.begin(); iter != cardToCardPtr.end(); iter++)
+
+    if(fieldType != 0)
+    {
+        if(cardAmount <11)
         {
-            temp = iter.value();
-            temp->setPos(centralX - cardAmount*50 + 100*i, 40 + lane*115);
-            i++;
+            for(QMultiMap<int, Card*>::iterator iter = cardToCardPtr.begin(); iter != cardToCardPtr.end(); iter++)
+            {
+                temp = iter.value();
+                temp->setPos(centralX - cardAmount*50 + 100*i, 40 + fieldType*115);
+                i++;
+            }
         }
+        else
+        {
+            for(QMultiMap<int, Card*>::iterator iter = cardToCardPtr.begin(); iter != cardToCardPtr.end(); iter++)
+            {
+                temp = iter.value();
+                temp->setPos(450 + 900.0*i/cardAmount, 40 + fieldType*115);
+                i++;
+            }
+        }
+    }
     else
     {
         if(cardAmount <11)
@@ -57,6 +68,30 @@ void Field::adjuctCardsPosition(int lane)
             }
 
     }
+
+}
+
+void Field::adjustCardsPosition_Game(int fieldType)
+{
+    int centralX = 500;
+
+    int i = 0;
+    Card *temp;
+
+    if(fieldType == 0)
+        for(QMultiMap<int, Card*>::iterator iter = cardToCardPtr.begin(); iter != cardToCardPtr.end(); iter++)
+        {
+            temp = iter.value();
+            temp->setPos(centralX - cardAmount*50 + 100*i, 800);
+            i++;
+        }
+}
+
+void Field::cardDiscarded(Card *card)
+{
+    this->removeCard(card);
+    this->adjustCardsPosition_Game(0);
+
 
 }
 

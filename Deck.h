@@ -4,6 +4,7 @@
 #include <map>
 #include <QObject>
 #include <QMultiMap>
+#include "Card.h"
 
 class Deck : public QObject
 {
@@ -31,7 +32,8 @@ public:
                    this->goldUsage = deck->goldUsage;
                    this->silverUsage = deck->goldUsage;
                   }
-
+    void addCard(Card *card, int lane);
+    void removeCard(Card *card);
 };
 
 #endif // DECK_H

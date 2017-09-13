@@ -17,8 +17,11 @@ public:
     bool weathered;
     bool selectable;
     QMultiMap<int, Card*> cardToCardPtr;
-    Card *card[40];
+    QMultiMap<int, Card*> sequenceToCardPtr;
     int cardAmount;
+public slots:
+    void cardDiscarded(Card *);
+
 
 signals:
    void fieldPressed();
@@ -27,7 +30,10 @@ protected:
    void mousePressEvent(QGraphicsSceneMouseEvent *event);
 
 public:
-    void adjuctCardsPosition(int lane);
+    void addCard(int cardNumber, Card *card);
+    void removeCard(Card *card);
+    void adjustCardsPosition_DeckControl(int fieldType);
+    void adjustCardsPosition_Game(int fieldType);
 
 
 };

@@ -31,8 +31,6 @@ private:
     Ui::MainWindow *ui;
 
 public:
-    Player player;
-    Player opponent;
     QGraphicsScene *scene;
     QGraphicsView *view;
     int status;
