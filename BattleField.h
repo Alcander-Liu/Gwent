@@ -10,8 +10,12 @@ class BattleField: public Field
 public:
     BattleField(QObject *parent = nullptr);
     ~BattleField();
+
+
 public:
-    Field *lanes[7];
+    Field *lanes[8];
+    bool enabled;
+    int countScores();
 
     //1: Melee;  2: Ranged;  3: siege; 0: special;
 };

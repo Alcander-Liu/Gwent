@@ -2,16 +2,25 @@
 
 BattleField::BattleField(QObject *parent): Field(parent)
 {
-    lanes[0] = new Field(this);
-    lanes[1] = new Field(this);
-    lanes[2] = new Field(this);
-    lanes[3] = new Field(this);
+    for(int i = 0; i<8; i++)
+    {
+        lanes[i] = new Field(this);
+    }
+    scores = 0;
+    enabled = false;
 }
 
 BattleField:: ~BattleField()
 {
-    delete lanes[0];
-    delete lanes[1];
-    delete lanes[2];
-    delete lanes[3];
+    for(int i = 0; i<8; i++)
+    {
+        delete lanes[i];
+    }
+}
+
+int BattleField::countScores()
+{
+    scores = lanes[1]->countScores() + lanes[2]->countScores() + lanes[3]->countScores();
+    emit scoresChanged("<font color = white size = 10 face = HalisGR-Bold>" +QString::number(scores)+"</font>");
+    return scores;
 }

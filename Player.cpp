@@ -4,6 +4,8 @@
 Player::Player(QObject * parent):QObject(parent)
 {
     cardAmount = 0;
+    passed = false;
+    discardAmount = 3;
     deckInGame = new Field(this);
     graveYard = new Field(this);
     hand = new Field(this);
@@ -23,35 +25,6 @@ void Player::generateCardsInDeck(Deck *deck, QGraphicsScene *scene)
         scene->addItem(tempCard);
         tempCard->hide();
     }
-
-
-
-/*
-    qsrand(QTime::currentTime().msec());
-    int tempRand;
-    int i,j;
-    Card *tempCard;
-    QMultiMap<int, int> tempMap = deck->cardNumberMap;
-
-    for(i = 1; i<= deck->cardAmount(); i++)
-    {
-        tempRand = (qrand()%27) + 1;
-        j = 0;
-        for(auto iter = tempMap.begin(); iter != tempMap.end(); iter++)
-        {
-            j++;
-            if(j == tempRand)
-            {
-                tempCard = newCard(iter.key());
-                deckInGame->cardToCardPtr.insert(i, tempCard);
-                scene->addItem(tempCard);
-                tempCard->hide();
-                qDebug()<<j;
-                tempMap.erase(iter);
-                break;
-            }
-        }
-    }*/
 }
 
 void Player::drawCards_round(int round)
@@ -82,12 +55,13 @@ void Player::drawCards(int times, Field *fieldSource)
         tempCard = fieldSource->at(tempRand);
         tempCard->field = -1;
         hand->addCard(tempCard);
+        connect(tempCard, SIGNAL(cardPressed(Card*)), this, SLOT(cardDiscarded(Card*)));
         tempCard->show();
         fieldSource->removeCard(tempCard);
     }
 
 
-    hand->adjustCardsPosition_Game(0);
+    hand->adjustCardsPosition_Game(0, mySide);
 }
 
 void Player::discardCards(int round)
@@ -106,19 +80,18 @@ void Player::discardCards(int round)
         discardAmount = 1;
         break;
     }
-
+    emit discardAmountChanged("<font color = white size = 4 face = HalisGR-Bold>" +QString::number(discardAmount)+"</font>");
     /*
      *
      *
      * show tips;
      * */
+
+
+
     cardsAvoided = new Field();
 
-    for(int i = 0; i < hand->getCardAmount(); i++)
-    {
-        tempCard = hand->at(i);
-        connect(tempCard, SIGNAL(cardPressed(Card*)), this, SLOT(cardDiscarded(Card *)));
-    }
+
 
     QEventLoop loop;
     connect(this, SIGNAL(endDiscarding()), &loop, SLOT(quit()));
@@ -147,6 +120,7 @@ void Player::cardDiscarded(Card *card)
     hand->removeCard(card);
     cardsAvoided->addCard(card);
     card->field = 3;
+    disconnect(card, SIGNAL(cardPressed(Card*)), this, SLOT(cardDiscarded(Card*)));
     card->hide();
 
     for(int i = 0; i < deckInGame->getCardAmount(); i++)
@@ -166,14 +140,22 @@ void Player::cardDiscarded(Card *card)
         drawCards(1, cardsAvoided);
 
     discardAmount --;
+    emit discardAmountChanged("<font color = white size = 4 face = HalisGR-Bold>" +QString::number(discardAmount)+"</font>");
 
     if(discardAmount == 0)
         emit endDiscarding();
 }
 
-void Player::playCard(Player *player)
+void Player::setCardsSelectable(bool b)
 {
-
-
-
+    hand->setCardsSelectable(b);
+    battleField->lanes[1]->setCardsSelectable(b);
+    battleField->lanes[2]->setCardsSelectable(b);
+    battleField->lanes[3]->setCardsSelectable(b);
 }
+
+void Player::playerPassed()
+{
+    passed = true;
+}
+

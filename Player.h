@@ -10,6 +10,7 @@
 #include "carddatabase.h"
 #include <QGraphicsScene>
 #include <QEventLoop>
+#include <QLabel>
 
 class Player: public QObject
 {
@@ -24,26 +25,32 @@ public:
     BattleField *battleField;
     Card *card;
     Card *bigCardWithDetails;
-
+    bool mySide; // true represents player, false represents opponent
+    bool passed;
 
 private:
     Field *cardsAvoided;
     int discardAmount;
+
 
 public:
     void generateCardsInDeck(Deck *deck, QGraphicsScene *scene);
     void drawCards_round(int round);
     void discardCards(int round);
     void drawCards(int times, Field *fieldSource);
-    void playCard(Player *player);
+    void setCardsSelectable(bool b); // this is for offline usesage
+
+
 
 private slots:
     void cardDiscarded(Card *card);
 
 signals:
     void endDiscarding();
+    void discardAmountChanged(QString);
 
 public slots:
+    void playerPassed();
 
 public:
 

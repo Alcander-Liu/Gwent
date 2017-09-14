@@ -4,6 +4,7 @@ Field::Field(QObject *parent):QObject(parent)
 {
     cardAmount = 0;
     weathered = 0;
+    scores = 0;
 }
 
 void Field::addCard(Card *card)
@@ -87,22 +88,75 @@ void Field::adjustCardsPosition_DeckControl(int fieldType)
 
 }
 
-void Field::adjustCardsPosition_Game(int fieldType)
+void Field::adjustCardsPosition_Game(int fieldType, bool mySide)
 {
-    int centralX = 500;
+    int centralX = 930;
 
     int i = 0;
     Card *temp;
-
-    if(fieldType == 0)
-        for(QMultiMap<int, Card*>::iterator iter = cardToCardPtr.begin(); iter != cardToCardPtr.end(); iter++)
+    if(mySide == true) // for player
+    {
+        if(fieldType == 0)
+            for(QMultiMap<int, Card*>::iterator iter = cardToCardPtr.begin(); iter != cardToCardPtr.end(); iter++)
+            {
+                temp = iter.value();
+                temp->setPos(centralX - cardAmount*50 + 100*i, 880);
+                i++;
+            }
+        else
         {
-            temp = iter.value();
-            temp->setPos(centralX - cardAmount*50 + 100*i, 800);
-            i++;
+            for(QMultiMap<int, Card*>::iterator iter = cardToCardPtr.begin(); iter != cardToCardPtr.end(); iter++)
+            {
+                temp = iter.value();
+                temp->setPos(centralX - cardAmount*50 + 100*i, 430 + 100*fieldType);
+                i++;
+            }
         }
+    }
+    else // for opponent
+    {
+        if(fieldType == 0)
+            for(QMultiMap<int, Card*>::iterator iter = cardToCardPtr.begin(); iter != cardToCardPtr.end(); iter++)
+            {
+                temp = iter.value();
+                temp->setPos(centralX - cardAmount*50 + 100*i, 50);
+                i++;
+            }
+        else
+        {
+            for(QMultiMap<int, Card*>::iterator iter = cardToCardPtr.begin(); iter != cardToCardPtr.end(); iter++)
+            {
+                temp = iter.value();
+                temp->setPos(centralX - cardAmount*50 + 100*i, 520 - 100*fieldType);
+                i++;
+            }
+        }
+    }
 }
 
+int Field::countScores()
+{
+    int tempScores = 0;
+    Card *tempCard;
+    for(auto iter = cardToCardPtr.begin(); iter != cardToCardPtr.end(); iter++)
+    {
+        tempCard = iter.value();
+        tempScores += tempCard->power;
+    }
+    scores = tempScores;
+    emit scoresChanged("<font color = white size = 10 face = HalisGR-Bold>" +QString::number(scores)+"</font>");
+    return tempScores;
+}
+
+void Field::setCardsSelectable(bool b)
+{
+    Card *tempCard;
+    for(auto iter = cardToCardPtr.begin(); iter != cardToCardPtr.end(); iter++)
+    {
+        tempCard = iter.value();
+        tempCard->selectable = b;
+    }
+}
 
 
 void Field::mousePressEvent(QGraphicsSceneMouseEvent *event)

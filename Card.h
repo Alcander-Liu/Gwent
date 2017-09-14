@@ -6,6 +6,7 @@
 #include <QGraphicsPixmapItem>
 #include <QPixmap>
 
+
 class Card : public QObject, public QGraphicsPixmapItem
 {
     Q_OBJECT
@@ -30,6 +31,7 @@ public:
     int cardNumber;
     QString remark;
     QString skill;
+    bool selectable = false;
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
@@ -39,7 +41,7 @@ public:
     {
         return nullptr;
     }
-
+    void used(int lane){  }
 //    Card * newCard(int cardNumber, QObject *parent = nullptr);
 
 signals:

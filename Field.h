@@ -16,6 +16,8 @@ public:
 public:
     bool weathered;
     bool selectable;
+    int scores;
+
 
 
 private:
@@ -24,6 +26,7 @@ private:
 
 signals:
    void fieldPressed();
+   void scoresChanged(QString);
 
 protected:
    void mousePressEvent(QGraphicsSceneMouseEvent *event);
@@ -32,10 +35,11 @@ public:
     void addCard(Card *card);
     void removeCard(Card *card);
     void adjustCardsPosition_DeckControl(int fieldType);
-    void adjustCardsPosition_Game(int fieldType);
+    void adjustCardsPosition_Game(int fieldType, bool mySide);
     Card* at(int index);
-    int getCardAmount(){return cardAmount;}
-
+    int getCardAmount(){ return cardAmount;}
+    virtual int countScores();
+    void setCardsSelectable(bool b);
 
 };
 
