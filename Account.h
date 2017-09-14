@@ -3,20 +3,28 @@
 
 #include <QObject>
 #include "Deck.h"
+#include <QFile>
+#include <QDataStream>
 
 class Account : public QObject
 {
     Q_OBJECT
 public:
-    explicit Account(QObject *parent = nullptr);
-
+    Account(QObject *parent = nullptr);
+    Account(const Account &);
+    ~Account(){}
 signals:
 
 public slots:
 
 public:
-    int deckAmount;
-    Deck deck[5];
+    Deck *deck[5];
+
+public:
+    void load();
+    void save();
 };
+
+
 
 #endif // ACCOUNT_H

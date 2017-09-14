@@ -11,7 +11,7 @@ public:
     BattleField(QObject *parent = nullptr);
     ~BattleField();
 public:
-    Field *lanes[4];
+    Field *lanes[7];
 
     //1: Melee;  2: Ranged;  3: siege; 0: special;
 };

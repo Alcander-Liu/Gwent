@@ -25,6 +25,7 @@ signals:
 
 private slots:
     void startGame(int deckNumber);
+    void cardSelected(Card *card);
 
 private:
     Player *player;
@@ -45,6 +46,8 @@ private:
     void buildChooseDeckUI();
     void initializeDeck(int deckNumber);
     void startRound(int round);
+    void showCardDetails(Card *card);
+    void deleteCardDetails();
 };
 
 #endif // GAMECONTROL_H

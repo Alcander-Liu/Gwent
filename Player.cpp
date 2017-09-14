@@ -14,13 +14,26 @@ Player::Player(QObject * parent):QObject(parent)
 
 void Player::generateCardsInDeck(Deck *deck, QGraphicsScene *scene)
 {
+    Card *tempCard;
+    for(int i = 0; i<deck->getCardAmount(); i++)
+    {
+        tempCard = newCard(deck->at(i), this);
+        tempCard->field = 3;
+        deckInGame->addCard(tempCard);
+        scene->addItem(tempCard);
+        tempCard->hide();
+    }
+
+
+
+/*
     qsrand(QTime::currentTime().msec());
     int tempRand;
     int i,j;
     Card *tempCard;
     QMultiMap<int, int> tempMap = deck->cardNumberMap;
 
-    for(i = 1; i<= deck->cardAmount; i++)
+    for(i = 1; i<= deck->cardAmount(); i++)
     {
         tempRand = (qrand()%27) + 1;
         j = 0;
@@ -38,44 +51,47 @@ void Player::generateCardsInDeck(Deck *deck, QGraphicsScene *scene)
                 break;
             }
         }
-    }
+    }*/
 }
 
-void Player::drawCards(int round)
+void Player::drawCards_round(int round)
 {
-    int drawAmount;
-    Card *tempCard;
-
     switch(round)
     {
     case 1:
-        drawAmount = 10;
+        drawCards(10, deckInGame);
         break;
     case 2:
-        drawAmount = 3;
+        drawCards(3, deckInGame);
         break;
     case 3:
-        drawAmount = 1;
+        drawCards(1, deckInGame);
         break;
     }
+}
 
+void Player::drawCards(int times, Field *fieldSource)
+{
+    qsrand(QTime::currentTime().msec());
+    int tempRand;
+    Card *tempCard;
 
-    for(int i = 0; i<drawAmount; i++)
+    for(int i = 0; i < times; i++)
     {
-        auto iter = this->deckInGame->cardToCardPtr.begin();
-        tempCard = iter.value();
-        this->hand->cardToCardPtr.insert(tempCard->cardNumber, tempCard);
-        hand->cardAmount ++;
+        tempRand = (qrand() % fieldSource->getCardAmount());
+        tempCard = fieldSource->at(tempRand);
+        tempCard->field = -1;
+        hand->addCard(tempCard);
         tempCard->show();
-        this->deckInGame->cardToCardPtr.erase(iter);
-        iter++;
+        fieldSource->removeCard(tempCard);
     }
-    this->hand->adjustCardsPosition_Game(0);
+
+
+    hand->adjustCardsPosition_Game(0);
 }
 
 void Player::discardCards(int round)
 {
-    int discardAmount;
     Card *tempCard;
 
     switch(round)
@@ -96,11 +112,68 @@ void Player::discardCards(int round)
      *
      * show tips;
      * */
-    for(auto iter = hand->cardToCardPtr.begin(); iter != hand->cardToCardPtr.end(); iter++)
+    cardsAvoided = new Field();
+
+    for(int i = 0; i < hand->getCardAmount(); i++)
     {
-        tempCard = iter.value();
-        connect(tempCard, SIGNAL(cardPressed(Card*)), hand, SLOT(cardDiscarded(Card *)));
+        tempCard = hand->at(i);
+        connect(tempCard, SIGNAL(cardPressed(Card*)), this, SLOT(cardDiscarded(Card *)));
     }
 
+    QEventLoop loop;
+    connect(this, SIGNAL(endDiscarding()), &loop, SLOT(quit()));
+    loop.exec();
+
+    for(int i = 0; i < hand->getCardAmount(); i++)
+    {
+        tempCard = hand->at(i);
+        disconnect(tempCard, SIGNAL(cardPressed(Card*)), this, SLOT(cardDiscarded(Card *)));
+    }
+
+    while(cardsAvoided->getCardAmount() != 0)
+    {
+        tempCard = cardsAvoided->at(0);
+        cardsAvoided->removeCard(tempCard);
+        deckInGame->addCard(tempCard);
+    }
+    delete cardsAvoided;
 }
 
+void Player::cardDiscarded(Card *card)
+{
+    Card *tempCard;
+
+
+    hand->removeCard(card);
+    cardsAvoided->addCard(card);
+    card->field = 3;
+    card->hide();
+
+    for(int i = 0; i < deckInGame->getCardAmount(); i++)
+    {
+        tempCard = deckInGame->at(i);
+        if(tempCard->cardNumber == card->number)
+        {
+            deckInGame->removeCard(tempCard);
+            cardsAvoided->addCard(tempCard);
+            i--;
+        }
+    }
+
+    if(deckInGame->getCardAmount() != 0)
+        drawCards(1, deckInGame);
+    else
+        drawCards(1, cardsAvoided);
+
+    discardAmount --;
+
+    if(discardAmount == 0)
+        emit endDiscarding();
+}
+
+void Player::playCard(Player *player)
+{
+
+
+
+}

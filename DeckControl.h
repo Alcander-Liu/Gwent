@@ -13,6 +13,8 @@
 #include <QLabel>
 #include <QGraphicsView>
 #include <QMessageBox>
+#include <QFile>
+#include <QDataStream>
 
 namespace Ui {
 class Form;

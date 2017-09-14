@@ -20,10 +20,10 @@ public:
     int level;
     int rarity;
     bool loyalty;
-    int lane;
+    int lane; // capable place:  1:Melee 2:Ranged 3:Siege -1:all 0:special
     int power;
     int armor;
-    int field;
+    int field;  //current place: 1:Melee 2:Ranged 3:Siege 0:special -1:hand -2:graveyard -3: deck
     int position;
     int number;
     int sequence;

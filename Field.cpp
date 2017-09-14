@@ -6,9 +6,9 @@ Field::Field(QObject *parent):QObject(parent)
     weathered = 0;
 }
 
-void Field::addCard(int cardNumber, Card *card)
+void Field::addCard(Card *card)
 {
-    cardToCardPtr.insert(cardNumber, card);
+    cardToCardPtr.insert(card->cardNumber, card);
     cardAmount ++;
 }
 
@@ -20,6 +20,22 @@ void Field::removeCard(Card *card)
         cardToCardPtr.erase(iter);
         cardAmount --;
     }
+}
+
+Card* Field::at(int index)
+{
+    int i = -1;
+    if(index >= 0 && index < cardAmount)
+    {
+        for(auto iter = cardToCardPtr.begin(); iter != cardToCardPtr.end(); iter++)
+        {
+            i++;
+            if(i == index)
+                return iter.value();
+        }
+    }
+    else
+        return nullptr;
 }
 
 void Field::adjustCardsPosition_DeckControl(int fieldType)
@@ -87,13 +103,7 @@ void Field::adjustCardsPosition_Game(int fieldType)
         }
 }
 
-void Field::cardDiscarded(Card *card)
-{
-    this->removeCard(card);
-    this->adjustCardsPosition_Game(0);
 
-
-}
 
 void Field::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {

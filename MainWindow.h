@@ -14,6 +14,10 @@
 #include <QGraphicsItem>
 #include <QPixmap>
 #include "GameControl.h"
+#include <QFile>
+#include <QDir>
+#include <QDataStream>
+#include <QDebug>
 
 namespace Ui {
 class MainWindow;

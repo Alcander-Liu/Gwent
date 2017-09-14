@@ -9,6 +9,7 @@
 #include "Deck.h"
 #include "carddatabase.h"
 #include <QGraphicsScene>
+#include <QEventLoop>
 
 class Player: public QObject
 {
@@ -24,13 +25,23 @@ public:
     Card *card;
     Card *bigCardWithDetails;
 
+
+private:
+    Field *cardsAvoided;
+    int discardAmount;
+
 public:
     void generateCardsInDeck(Deck *deck, QGraphicsScene *scene);
-    void drawCards(int round);
+    void drawCards_round(int round);
     void discardCards(int round);
+    void drawCards(int times, Field *fieldSource);
+    void playCard(Player *player);
 
+private slots:
+    void cardDiscarded(Card *card);
 
 signals:
+    void endDiscarding();
 
 public slots:
 

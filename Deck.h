@@ -10,30 +10,44 @@ class Deck : public QObject
 {
     Q_OBJECT
 public:
-    explicit Deck(QObject *parent = nullptr);
+    Deck(QObject *parent = nullptr);
+    Deck(const Deck &deck);
+    ~Deck(){}
 
 signals:
 
 public slots:
 
 public:
-    int cardAmount;
-    QMultiMap<int,int> cardNumberMap;
-    int goldUsage;
-    int silverUsage;
-    int bronzeUsage;
+    QMultiMap<int,int> cardNumberMap;    
     int leader;
     bool valid;
 
 public:
+    int cardAmount;
+    int goldUsage;
+    int silverUsage;
+    int bronzeUsage;
+
+public:
     void makeCopyOf(Deck *deck){
-                     this->cardAmount = deck->cardAmount;
+                     this->cardAmount = deck->getCardAmount();
                    this->cardNumberMap = deck->cardNumberMap;
-                   this->goldUsage = deck->goldUsage;
-                   this->silverUsage = deck->goldUsage;
+                   this->goldUsage = deck->getGoldUsage();
+                   this->silverUsage = deck->getSilverUsage();
+                   this->bronzeUsage = deck->getBronzeUsage();
+                   this->leader = deck->leader;
                   }
     void addCard(Card *card, int lane);
     void removeCard(Card *card);
+    int at(int index);
+
+    int getCardAmount(){return cardAmount;}
+    int getGoldUsage(){return goldUsage;}
+    int getSilverUsage(){return silverUsage;}
+    int getBronzeUsage(){return bronzeUsage;}
+    friend QDataStream & operator << (QDataStream &out, const Deck &deck);
+    friend QDataStream & operator >> (QDataStream &in, const Deck &deck);
 };
 
 #endif // DECK_H

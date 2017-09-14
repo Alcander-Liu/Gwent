@@ -48,7 +48,7 @@ DeckControl::DeckControl(Account *account, QWidget *parent) :
     connect(right, SIGNAL(buttonPressed()), this, SLOT(turnRightPage()));
 
     saveAndExit = new TurnPageButton(this);
-    saveAndExit->setRect(800, 850, 100, 50);
+    saveAndExit->setRect(1005, 927, 180, 40);
     scene->addItem(saveAndExit);
     connect(saveAndExit, SIGNAL(buttonPressed()), this, SLOT(saveDeck()));
 
@@ -93,7 +93,7 @@ void DeckControl::goBack()
 void DeckControl::loadDeck(int deckNumber)
 {
     deckEditingNumber = deckNumber;
-    deckEditing.makeCopyOf(&account->deck[deckNumber]);
+    deckEditing.makeCopyOf(account->deck[deckNumber]);
     oneCardIsSelected = false;
 
     view->show();
@@ -112,10 +112,10 @@ void DeckControl::loadDeck(int deckNumber)
 
     connect(m, SIGNAL(mapped(int)), this, SLOT(laneSelected(int)));
 
-    goldUsage->setText("<font color = white size = 4 face = HalisGR-Bold>" +QString::number(deckEditing.goldUsage)+"</font>");
-    silverUsage->setText("<font color = white size = 4 face = HalisGR-Bold>" +QString::number(deckEditing.silverUsage)+"</font>");
-    bronzeUsage->setText("<font color = white size = 4 face = HalisGR-Bold>" +QString::number(deckEditing.bronzeUsage)+"</font>");
-    totalUsage->setText("<font color = white size = 4 face = HalisGR-Bold>" +QString::number(deckEditing.cardAmount)+"</font>");
+    goldUsage->setText("<font color = white size = 4 face = HalisGR-Bold>" +QString::number(deckEditing.getGoldUsage())+"</font>");
+    silverUsage->setText("<font color = white size = 4 face = HalisGR-Bold>" +QString::number(deckEditing.getSilverUsage())+"</font>");
+    bronzeUsage->setText("<font color = white size = 4 face = HalisGR-Bold>" +QString::number(deckEditing.getBronzeUsage())+"</font>");
+    totalUsage->setText("<font color = white size = 4 face = HalisGR-Bold>" +QString::number(deckEditing.getCardAmount())+"</font>");
     goldUsage->show();
     silverUsage->show();
     bronzeUsage->show();
@@ -275,7 +275,7 @@ void DeckControl::NewToLane(Card *card, int lane)
     Card *temp = card->makeCopy(battleField);
     temp->field = lane;
     connect(temp, SIGNAL(cardPressed(Card*)), this, SLOT(cardSelected(Card*)));
-    battleField->lanes[lane]->addCard(temp->cardNumber, temp);
+    battleField->lanes[lane]->addCard(temp);
     //tempField->cardToCardPtr.insert(card->cardNumber, temp);
     scene->addItem(temp);
 
@@ -293,33 +293,29 @@ void DeckControl::NewToLane(Card *card, int lane)
 
 bool DeckControl::checkValidity(Card *card)
 {
-    if(deckEditing.cardAmount == 40)
+    if(deckEditing.getCardAmount() == 40)
         return false;
 
     switch(card->level)
     {
     case 3:
     {
-        if(deckEditing.goldUsage == 4)
+        if(deckEditing.getGoldUsage() == 4)
             return false;
-        for(auto iter = deckEditing.cardNumberMap.begin();
-            iter != deckEditing.cardNumberMap.end();
-            iter++)
+        for(int i = 0; i < deckEditing.getCardAmount(); i++)
         {
-            if(iter.key() == card->cardNumber)
+            if(deckEditing.at(i) == card->cardNumber)
                 return false;
         }
         break;
     }
     case 2:
     {
-        if(deckEditing.silverUsage == 6)
+        if(deckEditing.getSilverUsage() == 6)
             return false;
-        for(auto iter = deckEditing.cardNumberMap.begin();
-            iter != deckEditing.cardNumberMap.end();
-            iter++)
+        for(int i = 0; i < deckEditing.getCardAmount(); i++)
         {
-            if(iter.key() == card->cardNumber)
+            if(deckEditing.at(i) == card->cardNumber)
                 return false;
         }
         break;
@@ -327,11 +323,9 @@ bool DeckControl::checkValidity(Card *card)
     case 1:
     {
         int count = 0;
-        for(auto iter = deckEditing.cardNumberMap.begin();
-            iter != deckEditing.cardNumberMap.end();
-            iter++)
+        for(int i = 0; i < deckEditing.getCardAmount(); i++)
         {
-            if(iter.key() == card->cardNumber)
+            if(deckEditing.at(i) == card->cardNumber)
             {
                 count++;
                 if(count == 3)
@@ -411,7 +405,7 @@ void DeckControl::saveDeck()
         saveAndExit->setEnabled(true);
         return ;
     }
-    else if(deckEditing.cardAmount < 25)
+    else if(deckEditing.getCardAmount() < 25)
     {
         QMessageBox *warning = new QMessageBox;
         warning->setText("You need at least 25 cards");
@@ -423,21 +417,21 @@ void DeckControl::saveDeck()
         return ;
     }
     deckEditing.valid = true;
-    account->deck[deckEditingNumber].makeCopyOf(&deckEditing);
-
+    account->deck[deckEditingNumber]->makeCopyOf(&deckEditing);
+    account->save();
     emit exit();
 }
 
 void DeckControl::loadCardsInDeck()
 {
 
-    Field *tempField;
+
     for(auto iter = deckEditing.cardNumberMap.begin(); iter != deckEditing.cardNumberMap.end(); iter++)
     {
         selectedCard = newCard(iter.key(), battleField);
         selectedCard->field = iter.value();
         connect(selectedCard, SIGNAL(cardPressed(Card*)), this, SLOT(cardSelected(Card*)));
-        battleField->lanes[iter.value()]->addCard(selectedCard->cardNumber, selectedCard);
+        battleField->lanes[iter.value()]->addCard(selectedCard);
         //tempField->cardToCardPtr.insert(selectedCard->cardNumber, selectedCard);
         scene->addItem(selectedCard);
 
@@ -458,8 +452,8 @@ void DeckControl::loadCardsInDeck()
 
 void DeckControl::updateUsageLabel()
 {
-    totalUsage->setText("<font color = white size = 4 face = HalisGR-Bold>" +QString::number(deckEditing.cardAmount)+"</font>");
-    bronzeUsage->setText("<font color = white size = 4 face = HalisGR-Bold>" +QString::number(deckEditing.bronzeUsage)+"</font>");
-    silverUsage->setText("<font color = white size = 4 face = HalisGR-Bold>" +QString::number(deckEditing.silverUsage)+"</font>");
-    goldUsage->setText("<font color = white size = 4 face = HalisGR-Bold>" +QString::number(deckEditing.goldUsage)+"</font>");
+    totalUsage->setText("<font color = white size = 4 face = HalisGR-Bold>" +QString::number(deckEditing.getCardAmount())+"</font>");
+    bronzeUsage->setText("<font color = white size = 4 face = HalisGR-Bold>" +QString::number(deckEditing.getBronzeUsage())+"</font>");
+    silverUsage->setText("<font color = white size = 4 face = HalisGR-Bold>" +QString::number(deckEditing.getSilverUsage())+"</font>");
+    goldUsage->setText("<font color = white size = 4 face = HalisGR-Bold>" +QString::number(deckEditing.getGoldUsage())+"</font>");
 }
