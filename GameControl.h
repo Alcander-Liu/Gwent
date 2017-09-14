@@ -12,6 +12,7 @@
 #include "Player.h"
 #include "TurnPageButton.h"
 #include <QDebug>
+#include <QTimer>
 
 namespace Ui {
 class gameControl;
@@ -26,6 +27,8 @@ public:
 signals:
     void playerEndTurn();
     void turnChanged(QString);
+    void exit();
+
 private slots:
     void startGame(int deckNumber);
     void cardSelected(Card *card);
@@ -58,6 +61,10 @@ private:
     void showCardDetails(Card *card);
     void deleteCardDetails();
     void playCard(Player *player);
+    void countSubTotal();
+    bool gameEnd();
+    void showResult();
+
 };
 
 #endif // GAMECONTROL_H

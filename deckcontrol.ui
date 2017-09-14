@@ -13,24 +13,6 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QPushButton" name="newDeckButton">
-   <property name="geometry">
-    <rect>
-     <x>220</x>
-     <y>140</y>
-     <width>201</width>
-     <height>56</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>19</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>New Deck</string>
-   </property>
-  </widget>
   <widget class="QPushButton" name="goBackButton">
    <property name="geometry">
     <rect>
@@ -46,7 +28,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Go Beck</string>
+    <string>Go Back</string>
    </property>
   </widget>
  </widget>

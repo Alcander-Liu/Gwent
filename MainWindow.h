@@ -46,6 +46,9 @@ public:
  //   AIModeControl aIModeControl;
  //   SettingControl settingControl;
 
+signals:
+    void exit();
+
 public slots:
     void goToDeck();
     void goToMultiMode();

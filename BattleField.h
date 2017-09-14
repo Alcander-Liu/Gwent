@@ -9,7 +9,7 @@ class BattleField: public Field
     Q_OBJECT
 public:
     BattleField(QObject *parent = nullptr);
-    ~BattleField();
+
 
 
 public:

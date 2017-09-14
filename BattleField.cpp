@@ -10,13 +10,6 @@ BattleField::BattleField(QObject *parent): Field(parent)
     enabled = false;
 }
 
-BattleField:: ~BattleField()
-{
-    for(int i = 0; i<8; i++)
-    {
-        delete lanes[i];
-    }
-}
 
 int BattleField::countScores()
 {

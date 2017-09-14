@@ -27,6 +27,7 @@ public:
     Card *bigCardWithDetails;
     bool mySide; // true represents player, false represents opponent
     bool passed;
+    int bigScores;
 
 private:
     Field *cardsAvoided;
@@ -39,7 +40,7 @@ public:
     void discardCards(int round);
     void drawCards(int times, Field *fieldSource);
     void setCardsSelectable(bool b); // this is for offline usesage
-
+    void cleanBattleField();
 
 
 private slots:
@@ -50,7 +51,7 @@ signals:
     void discardAmountChanged(QString);
 
 public slots:
-    void playerPassed();
+
 
 public:
 

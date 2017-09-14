@@ -203,7 +203,7 @@ public:
         rarity = 4; //Legendary
         loyalty = true; //Loyal
         lane = -1; //all
-        power = -1; //None
+        power = 5; //None
         cardNumber = 9;
         this->setScale(SCALE);
     }

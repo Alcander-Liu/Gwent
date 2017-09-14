@@ -6,6 +6,7 @@ Player::Player(QObject * parent):QObject(parent)
     cardAmount = 0;
     passed = false;
     discardAmount = 3;
+    bigScores = 0;
     deckInGame = new Field(this);
     graveYard = new Field(this);
     hand = new Field(this);
@@ -55,11 +56,15 @@ void Player::drawCards(int times, Field *fieldSource)
         tempCard = fieldSource->at(tempRand);
         tempCard->field = -1;
         hand->addCard(tempCard);
-        connect(tempCard, SIGNAL(cardPressed(Card*)), this, SLOT(cardDiscarded(Card*)));
         tempCard->show();
         fieldSource->removeCard(tempCard);
     }
 
+    for(int i = 0; i<hand->getCardAmount(); i++)
+    {
+        tempCard = hand->at(i);
+        connect(tempCard, SIGNAL(cardPressed(Card*)), this, SLOT(cardDiscarded(Card*)));
+    }
 
     hand->adjustCardsPosition_Game(0, mySide);
 }
@@ -154,8 +159,20 @@ void Player::setCardsSelectable(bool b)
     battleField->lanes[3]->setCardsSelectable(b);
 }
 
-void Player::playerPassed()
+void Player::cleanBattleField()
 {
-    passed = true;
+    Card *tempCard;
+    for(int i = 1; i<4; i++)
+    {
+        while(battleField->lanes[i]->getCardAmount() != 0)
+        {
+            tempCard = battleField->lanes[i]->at(0);
+            battleField->lanes[i]->removeCard(tempCard);
+            graveYard->addCard(tempCard);
+            tempCard->field = -2; // in graveYard
+            tempCard->hide();
+        }
+        battleField->lanes[i]->adjustCardsPosition_Game(i, mySide);
+    }
+    battleField->countScores();
 }
-

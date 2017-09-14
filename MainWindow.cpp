@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->deckButton, SIGNAL(clicked(bool)), this, SLOT(goToDeck()));
     connect(ui->multiModeButton, SIGNAL(clicked(bool)), this, SLOT(goToMultiMode()));
+    connect(ui->exitButton, SIGNAL(clicked(bool)), this, SLOT(close()));
 
     account = new Account(this);
     account->load();
@@ -43,4 +44,5 @@ void MainWindow::goToMultiMode()
 
     ui->menuWidget->show();
 }
+
 

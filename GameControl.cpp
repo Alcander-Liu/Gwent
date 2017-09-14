@@ -9,8 +9,6 @@ GameControl::GameControl(Account *account, QWidget *parent) : QWidget(parent)
     ui->setupUi(this);
     this->show();
 
-
-
     buildChooseDeckUI();
 }
 
@@ -37,8 +35,8 @@ void GameControl::buildChooseDeckUI()
 
     QEventLoop loop;
     connect(pushButton, SIGNAL(clicked(bool)), &loop, SLOT(quit()));
+    connect(this, SIGNAL(exit()), &loop, SLOT(quit()));
     loop.exec();
-    this->hide();
 }
 
 void GameControl::startGame(int deckNumber)
@@ -52,17 +50,14 @@ void GameControl::startGame(int deckNumber)
     view->show();
 
     initializeDeck(deckNumber); //shuffle the cards and decide who fist;
-    startRound(1);
-/*    for(int i = 1; i<4; i++)
+    for(int i = 1; i<4; i++)
     {
         startRound(i);
         if(gameEnd() == true)
             break;
     }
-    showResult();*/
-
-    QEventLoop loop;
-    loop.exec();
+    showResult();
+    emit exit();
 }
 
 void GameControl::initializeDeck(int deckNumber)
@@ -156,17 +151,24 @@ void GameControl::initializeDeck(int deckNumber)
 void GameControl::startRound(int round)
 {
     myTurn = true;
+    oneCardIsSelected = false;
+    player->passed = false;
+    opponent->passed = false;
+
     player->drawCards_round(round);
     opponent->drawCards_round(round);  // This line should be deleted in online mode.
     player->discardCards(round);
     opponent->discardCards(round);  // This line should be deleted in online mode.
-    for(int i = 0; i < player->hand->getCardAmount(); i++)
+
+    for(int i = 0; i < player->hand->getCardAmount(); i++)  // This should be deleted in online mode.
     {
+        disconnect(player->hand->at(i), SIGNAL(cardPressed(Card*)), this, SLOT(cardSelected(Card*)));
         connect(player->hand->at(i), SIGNAL(cardPressed(Card*)), this, SLOT(cardSelected(Card*)));
     }
 
     for(int i = 0; i < opponent->hand->getCardAmount(); i++)  // This should be deleted in online mode.
     {
+        disconnect(opponent->hand->at(i), SIGNAL(cardPressed(Card*)), this, SLOT(cardSelected(Card*)));
         connect(opponent->hand->at(i), SIGNAL(cardPressed(Card*)), this, SLOT(cardSelected(Card*)));
     }
 
@@ -183,8 +185,10 @@ void GameControl::startRound(int round)
         if(player->passed == true && opponent->passed == true)
             break;
     }
-    qDebug("endRound");
-  //  countSubTotal();*/
+
+    countSubTotal();
+    player->cleanBattleField();
+    opponent->cleanBattleField();
 }
 
 
@@ -354,3 +358,75 @@ void GameControl::opponentPassed()
         emit playerEndTurn();
     }
 }
+
+void GameControl::countSubTotal()
+{
+    QLabel *temp = new QLabel(this);
+    temp->setGeometry(800, 450, 800, 200);
+    temp->setAlignment(Qt::AlignCenter);
+    temp->show();
+    if(player->battleField->scores > opponent->battleField->scores)
+    {
+        player->bigScores ++;
+        temp->setText("<font color = white size = 16 face = HalisGR-Bold> You Won This Round!</font>");
+    }
+    else if(player->battleField->scores < opponent->battleField->scores)
+    {
+        opponent->bigScores ++;
+        temp->setText("<font color = white size = 16 face = HalisGR-Bold> You lost This Round!</font>");
+    }
+    else
+    {
+        player->bigScores ++;
+        opponent->bigScores ++;
+        temp->setText("<font color = white size = 16 face = HalisGR-Bold> Even!</font>");
+    }
+
+    QEventLoop loop;
+    QTimer timer;
+    timer.setSingleShot(true);
+    connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
+    timer.start(2000);
+    loop.exec();
+
+    delete temp;
+}
+
+bool GameControl::gameEnd()
+{
+    if(player->bigScores == 2 || opponent->bigScores == 2)
+        return true;
+    else
+        return false;
+}
+
+void GameControl::showResult()
+{
+    QLabel *temp = new QLabel(this);
+    temp->setGeometry(800, 450, 800, 200);
+    temp->setAlignment(Qt::AlignCenter);
+    temp->show();
+    if(player->bigScores > opponent->bigScores)
+    {
+        temp->setText("<font color = white size = 16 face = HalisGR-Bold> You Won This Game!</font>");
+    }
+    else if(player->bigScores < opponent->bigScores)
+    {
+        temp->setText("<font color = white size = 16 face = HalisGR-Bold> You lost This Game!</font>");
+    }
+    else
+    {
+        temp->setText("<font color = white size = 16 face = HalisGR-Bold> Even!</font>");
+    }
+
+    QEventLoop loop;
+    QTimer timer;
+    timer.setSingleShot(true);
+    connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
+    timer.start(4000);
+    loop.exec();
+
+    delete temp;
+}
+
+
