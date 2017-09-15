@@ -17,7 +17,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     account = new Account(this);
     account->load();
-
 }
 
 MainWindow::~MainWindow()
@@ -30,7 +29,6 @@ void MainWindow::goToDeck()
     ui->menuWidget->hide();
 
     deckControl = new DeckControl(account, this);
-    deckControl->run();
     delete deckControl;
 
     ui->menuWidget->show();

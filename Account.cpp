@@ -6,14 +6,6 @@ Account::Account(QObject *parent) : QObject(parent)
         this->deck[i] = new Deck(this);
 }
 
-Account::Account(const Account &account)
-{
-    this->setParent(account.parent());
-    for(int i = 0; i<5; i++)
-        this->deck[i] = new Deck(account.deck[i]);
-}
-
-
 void Account::load()
 {
     QFile file("account.txt");
@@ -21,9 +13,6 @@ void Account::load()
 
     QDataStream in(&file);
     in.setVersion(QDataStream::Qt_5_9);
-    int a;
-    in >> a;
-
 
     for(int i=0; i<5; i++)
     {
@@ -44,8 +33,6 @@ void Account::save()
 
     QDataStream out(&file);
     out.setVersion(QDataStream::Qt_5_9);
-    int a = 3;
-    out << a;
 
     for(int i=0; i<5; i++)
     {

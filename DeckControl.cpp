@@ -6,28 +6,28 @@
 #include <QGraphicsPixmapItem>
 using namespace std;
 
-DeckControl::DeckControl(Account *account, QWidget *parent) :
+// setup UI, buttons, labels, and the scene
+// wait for user to choose a deck to edit
+DeckControl::DeckControl(Account *account, QWidget *parent) : 
     QWidget(parent)
 {
     ui = new Ui::Form;
     ui->setupUi(this);
 
     QSignalMapper *m = new QSignalMapper(this);
-
     QPushButton *pushButton;
     for(int i = 0; i<5; i++)
     {
         pushButton = new QPushButton(this);
         pushButton->setText("Deck " + QString::number(i+1));
         pushButton->setGeometry(900, 300+100*i, 200, 50);
+        pushButton->show();
         connect(pushButton, SIGNAL(clicked()), m, SLOT(map()));
         m->setMapping(pushButton, i);
     }
     connect(m, SIGNAL(mapped(int)), this, SLOT(loadDeck(int)));
 
     this->show();
-
-
 
     oneCardIsSelected = false;
     this->account = account;
@@ -52,6 +52,11 @@ DeckControl::DeckControl(Account *account, QWidget *parent) :
     scene->addItem(saveAndExit);
     connect(saveAndExit, SIGNAL(buttonPressed()), this, SLOT(saveDeck()));
 
+    TurnPageButton *clearDeckButton = new TurnPageButton(this);
+    clearDeckButton->setRect(825, 927, 180, 40);
+    scene->addItem(clearDeckButton);
+    connect(clearDeckButton, SIGNAL(buttonPressed()), this, SLOT(clearDeck()));
+
     goldUsage = new QLabel(this);
     silverUsage = new QLabel(this);
     bronzeUsage = new QLabel(this);
@@ -62,32 +67,17 @@ DeckControl::DeckControl(Account *account, QWidget *parent) :
     totalUsage->setGeometry(270, 180, 50, 50);
 
     generateAllCards();
-    for(int i = 1; i<28; i++)
-    {
-        scene->addItem(card[i]);
-        connect(card[i], SIGNAL(cardPressed(Card*)), this, SLOT(cardSelected(Card*)));
-    }
-}
+    
 
+    QEventLoop loop;
+    connect(ui->goBackButton, SIGNAL(clicked(bool)), &loop, SLOT(quit()));
+    loop.exec();  // wait for user to choose a deck to edit
+    this->hide();  // exit deckControl
+}
 
 DeckControl::~DeckControl()
 {
     delete ui;
-}
-
-void DeckControl::run()
-{
-
-    QEventLoop loop;
-    connect(ui->goBackButton, SIGNAL(clicked(bool)), &loop, SLOT(quit()));
-    loop.exec();
-    this->hide();
-}
-
-void DeckControl::goBack()
-{
-
-
 }
 
 void DeckControl::loadDeck(int deckNumber)
@@ -98,20 +88,20 @@ void DeckControl::loadDeck(int deckNumber)
 
     view->show();
 
+    // setup melee, ranged, siege, and special
     battleField = new BattleField(this);
     QSignalMapper *m = new QSignalMapper(this);
-
     for(int i = 0; i<4; i++)
     {
-        battleField->lanes[i]->setRect(450, 75+i*110, 1020, 96);
+        battleField->lanes[i]->setRect(450, 75 + i*110, 1020, 96);
         scene->addItem(battleField->lanes[i]);
         connect(battleField->lanes[i], SIGNAL(fieldPressed()), m, SLOT(map()));
         m->setMapping(battleField->lanes[i], i);
     }
     battleField->lanes[0]->setRect(440, 525, 1040, 115);
-
     connect(m, SIGNAL(mapped(int)), this, SLOT(laneSelected(int)));
 
+    // setup usage label
     goldUsage->setText("<font color = white size = 4 face = HalisGR-Bold>" +QString::number(deckEditing.getGoldUsage())+"</font>");
     silverUsage->setText("<font color = white size = 4 face = HalisGR-Bold>" +QString::number(deckEditing.getSilverUsage())+"</font>");
     bronzeUsage->setText("<font color = white size = 4 face = HalisGR-Bold>" +QString::number(deckEditing.getBronzeUsage())+"</font>");
@@ -121,15 +111,19 @@ void DeckControl::loadDeck(int deckNumber)
     bronzeUsage->show();
     totalUsage->show();
 
+    // show first ten cards to be chosen
     cardsVisibleIndex = 1;
     setCardsVisible(cardsVisibleIndex);
 
+    // load deck info
     loadCardsInDeck();
 
+    // wait for user to select cards and build their deck.
     QEventLoop loop;
     connect(this, SIGNAL(exit()), &loop, SLOT(quit()));
     loop.exec();
 
+    // back to the UI to choose deck1 to deck5
     delete battleField;
     delete m;
     view->hide();
@@ -170,7 +164,10 @@ void DeckControl::generateAllCards()
     card[27] = new Card027(this);
 
     for(int i = 1; i<28; i++)
-        card[i]->sequence = i;
+    {
+        scene->addItem(card[i]);
+        connect(card[i], SIGNAL(cardPressed(Card*)), this, SLOT(cardSelected(Card*)));
+    }
 }
 
 void DeckControl::setCardsVisible(int index)
@@ -189,7 +186,6 @@ void DeckControl::setCardsVisible(int index)
     {
         card[index+i]->setPos(100*i + 440, 750);
     }
-
 }
 
 void DeckControl::cardSelected(Card *card)
@@ -200,11 +196,11 @@ void DeckControl::cardSelected(Card *card)
         {
             retrieveFromDeck(card);
         }
-        else if(card->level == 4)
+        else if(card->level == 4) // leader
         {
             oneCardIsSelected = true;
-            selectedCard = card;
             showCardDetails(card);
+            selectedCard = card;            
 
             if(leader != nullptr)
                 delete leader;
@@ -222,7 +218,7 @@ void DeckControl::cardSelected(Card *card)
             selectedCard = card;
         }
     }
-    else
+    else // oneCardIsSelected == true
     {
         deleteCardDetails();
         oneCardIsSelected = false;
@@ -233,24 +229,24 @@ void DeckControl::laneSelected(int lane)
 {
     if(oneCardIsSelected == true)
     {
-        if(selectedCard->level == 4)
+        if(selectedCard->level == 4) // leader
         {
             deleteCardDetails();
             oneCardIsSelected = false;
         }
-        else if(lane == selectedCard->lane)
+        else if(lane == selectedCard->lane) // lane valid
         {
-            NewToLane(selectedCard, lane);
+            newToLane(selectedCard, lane);
             deleteCardDetails();
             oneCardIsSelected = false;
         }
-        else if(selectedCard->lane == -1 && lane != 0)
+        else if(selectedCard->lane == -1 && lane != 0) // lane valid
         {
-            NewToLane(selectedCard, lane);
+            newToLane(selectedCard, lane);
             deleteCardDetails();
             oneCardIsSelected = false;
         }
-        else
+        else  // lane invalid
         {
             deleteCardDetails();
             oneCardIsSelected = false;
@@ -258,35 +254,20 @@ void DeckControl::laneSelected(int lane)
     }
 }
 
-void DeckControl::NewToLane(Card *card, int lane)
+void DeckControl::newToLane(Card *card, int lane)
 {
-    if(this->checkValidity(card) == false)
+    if(this->checkValidity(card) == false)  // invalid due to card usages
         return;
 
     deckEditing.addCard(card, lane);
-    //deckEditing.cardAmount ++;
     updateUsageLabel();
 
-    //deckEditing.cardNumberMap.insert(card->cardNumber, lane);
-    //deckEditing.cardNumber.insert(pair<int,int>(deckEditing.cardAmount, card->cardNumber));
-
-    //Field *tempField = battleField->lanes[lane];
-
     Card *temp = card->makeCopy(battleField);
-    temp->field = lane;
+    temp->field = lane;  // record current field(place)
     connect(temp, SIGNAL(cardPressed(Card*)), this, SLOT(cardSelected(Card*)));
     battleField->lanes[lane]->addCard(temp);
-    //tempField->cardToCardPtr.insert(card->cardNumber, temp);
     scene->addItem(temp);
-
-
-    //tempField->cardAmount++;
-
-
- /*   tempField->card[tempField->cardAmount] = card->makeCopy(battleField);
-    scene->addItem(tempField->card[tempField->cardAmount]);
-    connect(tempField->card[tempField->cardAmount])
-    tempField->cardAmount++;*/
+    temp->show();
 
     battleField->lanes[lane]->adjustCardsPosition_DeckControl(lane);
 }
@@ -298,7 +279,7 @@ bool DeckControl::checkValidity(Card *card)
 
     switch(card->level)
     {
-    case 3:
+    case 3: // gold
     {
         if(deckEditing.getGoldUsage() == 4)
             return false;
@@ -309,7 +290,7 @@ bool DeckControl::checkValidity(Card *card)
         }
         break;
     }
-    case 2:
+    case 2: // silver
     {
         if(deckEditing.getSilverUsage() == 6)
             return false;
@@ -320,7 +301,7 @@ bool DeckControl::checkValidity(Card *card)
         }
         break;
     }
-    case 1:
+    case 1: // bronze
     {
         int count = 0;
         for(int i = 0; i < deckEditing.getCardAmount(); i++)
@@ -389,19 +370,17 @@ void DeckControl::retrieveFromDeck(Card *card)
     battleField->lanes[card->field]->removeCard(card);
     battleField->lanes[card->field]->adjustCardsPosition_DeckControl(card->field);
     delete card;
-            //battleField->lanes[card->field]->cardToCardPtr.erase(iter);
-            //battleField->lanes[card->field]->cardAmount--;
 }
 
 void DeckControl::saveDeck()
 {
-    if(leader == 0)
+    if(leader == 0) // didn't choose a leader
     {
         QMessageBox *warning = new QMessageBox;
         warning->setText("A leader must be chosen.");
         warning->exec();
         delete warning;
-        saveAndExit->setEnabled(false);
+        saveAndExit->setEnabled(false); // reset the button
         saveAndExit->setEnabled(true);
         return ;
     }
@@ -424,18 +403,13 @@ void DeckControl::saveDeck()
 
 void DeckControl::loadCardsInDeck()
 {
-
-
     for(auto iter = deckEditing.cardNumberMap.begin(); iter != deckEditing.cardNumberMap.end(); iter++)
     {
         selectedCard = newCard(iter.key(), battleField);
         selectedCard->field = iter.value();
         connect(selectedCard, SIGNAL(cardPressed(Card*)), this, SLOT(cardSelected(Card*)));
         battleField->lanes[iter.value()]->addCard(selectedCard);
-        //tempField->cardToCardPtr.insert(selectedCard->cardNumber, selectedCard);
         scene->addItem(selectedCard);
-
-        //tempField->cardAmount++;
     }
     for(int i = 0; i<4; i++)
         battleField->lanes[i]->adjustCardsPosition_DeckControl(i);
@@ -448,6 +422,17 @@ void DeckControl::loadCardsInDeck()
         leader->setScale(0.47);
         leader->show();
     }
+}
+
+void DeckControl::clearDeck()
+{
+    for(int i = 0; i<4; i++)
+        while(battleField->lanes[i]->getCardAmount() != 0 )
+        {
+            retrieveFromDeck(battleField->lanes[i]->at(0));
+        }
+    delete leader;
+    leader = nullptr;
 }
 
 void DeckControl::updateUsageLabel()

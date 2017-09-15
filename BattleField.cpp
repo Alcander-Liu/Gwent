@@ -10,7 +10,6 @@ BattleField::BattleField(QObject *parent): Field(parent)
     enabled = false;
 }
 
-
 int BattleField::countScores()
 {
     scores = lanes[1]->countScores() + lanes[2]->countScores() + lanes[3]->countScores();

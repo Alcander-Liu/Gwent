@@ -2,7 +2,6 @@
 #define DECKCONTROL_H
 
 #include <QWidget>
-#include <QMainWindow>
 #include <QObject>
 #include "Account.h"
 #include "carddatabase.h"
@@ -33,57 +32,47 @@ signals:
 private:
     Ui::Form *ui;
     Account *account;
-    bool oneCardIsSelected;
-    Card *selectedCard;
     BattleField *battleField;
-    Deck deckEditing;
-    QGraphicsScene *scene;
+    Card *selectedCard;
     Card *bigCardWithDetails;
+    Card *leader = nullptr;
+    Card *card[28];
+    Deck deckEditing;    
     QLabel *remark;
     QLabel *skill;
     QLabel *goldUsage;
     QLabel *silverUsage;
     QLabel *bronzeUsage;
     QLabel *totalUsage;
-    Card *leader = nullptr;
+    QGraphicsScene *scene;
     QGraphicsView *view;
     TurnPageButton *saveAndExit;
+    int cardsVisibleIndex;
     int deckEditingNumber;
-
-
-public:
-    Card *card[28];
-    Card *cardInDeck[40];
-
-public slots:
-    void goBack();
-    void loadDeck(int);
-    void cardSelected(Card *);
-    void laneSelected(int);
+    bool oneCardIsSelected;
 
 private slots:
+    void clearDeck();
+    void cardSelected(Card *);
+    void loadDeck(int);
+    void laneSelected(int);
+    void saveDeck();
     void turnLeftPage();
     void turnRightPage();
-    void saveDeck();
-
 
 public:
     void run();
-    void generateAllCards();
-    void setCardsVisible(int index);
-    void NewToLane(Card *card, int lane);
-
+    
 private:
     bool checkValidity(Card *card);
-    void showCardDetails(Card *card);
     void deleteCardDetails();
-    void retrieveFromDeck(Card *card);
+    void generateAllCards();
     void loadCardsInDeck();
+    void newToLane(Card *card, int lane);
+    void retrieveFromDeck(Card *card);
+    void setCardsVisible(int index);
+    void showCardDetails(Card *card);
     void updateUsageLabel();
-
-
-private:
-    int cardsVisibleIndex;
 
 };
 

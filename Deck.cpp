@@ -6,20 +6,8 @@ Deck::Deck(QObject *parent) : QObject(parent)
     goldUsage = 0;
     silverUsage = 0;
     bronzeUsage = 0;
-    leader = 0;
+    leader = 0; // no leader
     valid = false;
-}
-
-Deck::Deck(const Deck &deck)
-{
-    cardAmount = deck.cardAmount;
-    goldUsage = deck.goldUsage;
-    silverUsage = deck.silverUsage;
-    bronzeUsage = deck.bronzeUsage;
-    leader = deck.leader;
-    valid = deck.valid;
-    cardNumberMap = deck.cardNumberMap;
-    this->setParent(deck.parent());
 }
 
 void Deck::makeCopyOf(Deck *deck)
@@ -32,7 +20,6 @@ void Deck::makeCopyOf(Deck *deck)
     this->leader = deck->leader;
     this->valid = deck->valid;
 }
-
 
 void Deck::addCard(Card *card, int lane)
 {
@@ -75,7 +62,7 @@ void Deck::removeCard(Card *card)
     cardAmount --;
 }
 
-int Deck::at(int index)
+int Deck::at(int index) // return cardNumber at map[index];
 {
     int i = -1;
     if(index >= 0 && index < cardAmount)

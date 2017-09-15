@@ -2,7 +2,6 @@
 #define CARD_H
 
 #include <QObject>
-#include <QWidget>
 #include <QGraphicsPixmapItem>
 #include <QPixmap>
 
@@ -27,7 +26,6 @@ public:
     int field;  //current place: 1:Melee 2:Ranged 3:Siege 0:special -1:hand -2:graveyard -3: deck
     int position;
     int number;
-    int sequence;
     int cardNumber;
     QString remark;
     QString skill;
@@ -41,9 +39,7 @@ public:
     {
         return nullptr;
     }
-    void used(int lane){  }
-//    Card * newCard(int cardNumber, QObject *parent = nullptr);
-
+    
 signals:
     void cardPressed(Card *);
 

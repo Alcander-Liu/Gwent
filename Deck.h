@@ -1,7 +1,6 @@
 #ifndef DECK_H
 #define DECK_H
 
-#include <map>
 #include <QObject>
 #include <QMultiMap>
 #include "Card.h"
@@ -11,17 +10,15 @@ class Deck : public QObject
     Q_OBJECT
 public:
     Deck(QObject *parent = nullptr);
-    Deck(const Deck &deck);
-    ~Deck(){}
 
 signals:
 
 public slots:
 
 public:
-    QMultiMap<int,int> cardNumberMap;    
-    int leader;
-    bool valid;
+    QMultiMap<int,int> cardNumberMap;  // <cardNumber, existing field(melee/siege/ranged/special)> 
+    int leader; // leader card's number
+    bool valid; // 25~40 cards
 
 public:
     int cardAmount;
@@ -35,12 +32,11 @@ public:
     void removeCard(Card *card);
     int at(int index);
 
-    int getCardAmount(){return cardAmount;}
-    int getGoldUsage(){return goldUsage;}
-    int getSilverUsage(){return silverUsage;}
-    int getBronzeUsage(){return bronzeUsage;}
-    friend QDataStream & operator << (QDataStream &out, const Deck &deck);
-    friend QDataStream & operator >> (QDataStream &in, const Deck &deck);
+    int getCardAmount(){ return cardAmount; }
+    int getGoldUsage(){ return goldUsage; }
+    int getSilverUsage(){ return silverUsage; }
+    int getBronzeUsage(){ return bronzeUsage; }
+
 };
 
 #endif // DECK_H
