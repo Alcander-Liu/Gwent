@@ -28,6 +28,7 @@ public:
     bool mySide; // true represents player, false represents opponent
     bool passed;
     int bigScores;
+    Card *leader;
 
 private:
     Field *cardsAvoided;
@@ -49,6 +50,7 @@ private slots:
 signals:
     void endDiscarding();
     void discardAmountChanged(QString);
+    void roundEnd(QString);
 
 public slots:
 

@@ -30,14 +30,7 @@ public:
     int bronzeUsage;
 
 public:
-    void makeCopyOf(Deck *deck){
-                     this->cardAmount = deck->getCardAmount();
-                   this->cardNumberMap = deck->cardNumberMap;
-                   this->goldUsage = deck->getGoldUsage();
-                   this->silverUsage = deck->getSilverUsage();
-                   this->bronzeUsage = deck->getBronzeUsage();
-                   this->leader = deck->leader;
-                  }
+    void makeCopyOf(Deck *deck);
     void addCard(Card *card, int lane);
     void removeCard(Card *card);
     int at(int index);

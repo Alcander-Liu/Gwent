@@ -26,6 +26,18 @@ void Player::generateCardsInDeck(Deck *deck, QGraphicsScene *scene)
         scene->addItem(tempCard);
         tempCard->hide();
     }
+
+    leader = newCard(deck->leader, this);
+    leader->field = 3;
+    scene->addItem(leader);
+    leader->selectable = false;
+    leader->field = -1;
+    connect(leader, SIGNAL(cardPressed(Card*)), this->parent(), SLOT(cardSelected(Card*)));
+    if(mySide == true)
+        leader->setPos(200, 870);
+    else
+        leader->setPos(200, 50);
+    leader->show();
 }
 
 void Player::drawCards_round(int round)
@@ -46,7 +58,7 @@ void Player::drawCards_round(int round)
 
 void Player::drawCards(int times, Field *fieldSource)
 {
-    qsrand(QTime::currentTime().msec());
+    qsrand(QTime::currentTime().msec()+qrand());
     int tempRand;
     Card *tempCard;
 
@@ -153,6 +165,7 @@ void Player::cardDiscarded(Card *card)
 
 void Player::setCardsSelectable(bool b)
 {
+    leader->selectable = true;
     hand->setCardsSelectable(b);
     battleField->lanes[1]->setCardsSelectable(b);
     battleField->lanes[2]->setCardsSelectable(b);

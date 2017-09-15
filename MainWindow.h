@@ -18,6 +18,7 @@
 #include <QDir>
 #include <QDataStream>
 #include <QDebug>
+#include <QSize>
 
 namespace Ui {
 class MainWindow;
@@ -45,6 +46,7 @@ public:
 //    MenuControl menuControl;
  //   AIModeControl aIModeControl;
  //   SettingControl settingControl;
+
 
 signals:
     void exit();

@@ -13,6 +13,9 @@
 #include "TurnPageButton.h"
 #include <QDebug>
 #include <QTimer>
+#include <QMessageBox>
+#include "MyTimerLoop.h"
+#include <QGraphicsTextItem>
 
 namespace Ui {
 class gameControl;

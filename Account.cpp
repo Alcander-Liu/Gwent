@@ -13,19 +13,6 @@ Account::Account(const Account &account)
         this->deck[i] = new Deck(account.deck[i]);
 }
 
-QDataStream & operator << (QDataStream &out, const Account &account)
-{
-    for(int i=0; i<5; i++)
-        out << account.deck[i];
-    return out;
-}
-
-QDataStream & operator >> (QDataStream &in, Account &account)
-{
-    for(int i=0; i<5; i++)
-        in << account.deck[i];
-    return in;
-}
 
 void Account::load()
 {

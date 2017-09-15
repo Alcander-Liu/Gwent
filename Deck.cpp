@@ -22,6 +22,18 @@ Deck::Deck(const Deck &deck)
     this->setParent(deck.parent());
 }
 
+void Deck::makeCopyOf(Deck *deck)
+{
+    this->cardAmount = deck->getCardAmount();
+    this->cardNumberMap = deck->cardNumberMap;
+    this->goldUsage = deck->getGoldUsage();
+    this->silverUsage = deck->getSilverUsage();
+    this->bronzeUsage = deck->getBronzeUsage();
+    this->leader = deck->leader;
+    this->valid = deck->valid;
+}
+
+
 void Deck::addCard(Card *card, int lane)
 {
     switch(card->level)
@@ -79,26 +91,3 @@ int Deck::at(int index)
         return -1;
 }
 
-QDataStream &operator << (QDataStream &out, const Deck &deck)
-{
-    out << deck.cardNumberMap;
-    out << deck.leader;
-    out << deck.valid;
-    out << deck.cardAmount;
-    out << deck.goldUsage;
-    out << deck.silverUsage;
-    out << deck.bronzeUsage;
-    return out;
-}
-
-QDataStream &operator >> (QDataStream &in, Deck &deck)
-{
-    in << deck.cardNumberMap;
-    in << deck.leader;
-    in << deck.valid;
-    in << deck.cardAmount;
-    in << deck.goldUsage;
-    in << deck.silverUsage;
-    in << deck.bronzeUsage;
-    return in;
-}

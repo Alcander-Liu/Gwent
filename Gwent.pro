@@ -36,7 +36,8 @@ SOURCES += \
     Field2.cpp \
     TurnPageButton.cpp \
     CardDataBase.cpp \
-    GameControl.cpp
+    GameControl.cpp \
+    MyTimerLoop.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -50,7 +51,8 @@ HEADERS += \
     BattleField.h \
     Field2.h \
     TurnPageButton.h \
-    GameControl.h
+    GameControl.h \
+    MyTimerLoop.h
 
 FORMS += \
         MainWindow.ui \

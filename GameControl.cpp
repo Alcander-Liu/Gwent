@@ -41,6 +41,16 @@ void GameControl::buildChooseDeckUI()
 
 void GameControl::startGame(int deckNumber)
 {
+    if(account->deck[deckNumber]->valid == false)
+    {
+        QMessageBox *warning = new QMessageBox;
+        warning->setText("This deck is not valid!");
+        warning->exec();
+        delete warning;
+
+        return ;
+    }
+
     oneCardIsSelected = false;
 
     scene = new QGraphicsScene(0, 0, 1918, 1078, this);
@@ -48,6 +58,7 @@ void GameControl::startGame(int deckNumber)
     view->setGeometry(0, 0, 1920, 1080);
     view->setStyleSheet(" border-image: url(:/card/Gwent Cards/GameBackground_1080.png) ");
     view->show();
+
 
     initializeDeck(deckNumber); //shuffle the cards and decide who fist;
     for(int i = 1; i<4; i++)
@@ -81,7 +92,7 @@ void GameControl::initializeDeck(int deckNumber)
 
     for(int i = 4; i<7; i++)
     {
-        player->battleField->lanes[i]->setRect(450, 850-i*100, 1020, 96);
+        player->battleField->lanes[i]->setRect(450, 840-i*100, 1020, 96);
         scene->addItem(player->battleField->lanes[i]);
         connect(player->battleField->lanes[i], SIGNAL(fieldPressed()), m, SLOT(map()));
         m->setMapping(player->battleField->lanes[i], i);
@@ -96,14 +107,14 @@ void GameControl::initializeDeck(int deckNumber)
         playersScores[i]->show();
     }
 
-    playersScores[0]->setGeometry(330, 670, 80, 80);
+    playersScores[0]->setGeometry(300, 670, 80, 80);
     connect(player->battleField, SIGNAL(scoresChanged(QString)), playersScores[0], SLOT(setText(QString)));
     for(int i = 1; i<4; i++)
     {
         playersScores[i]->setGeometry(440, 455+100*i, 80, 80);
         connect(player->battleField->lanes[i], SIGNAL(scoresChanged(QString)), playersScores[i], SLOT(setText(QString)));
     }
-    playersScores[4]->setGeometry(300, 370, 80, 80);
+    playersScores[4]->setGeometry(300, 340, 80, 80);
     connect(opponent->battleField, SIGNAL(scoresChanged(QString)), playersScores[4], SLOT(setText(QString)));
     for(int i = 5; i<8; i++)
     {
@@ -139,13 +150,23 @@ void GameControl::initializeDeck(int deckNumber)
 
     TurnPageButton *passedButton1 = new TurnPageButton(this);
     TurnPageButton *passedButton2 = new TurnPageButton(this);
-    passedButton1->setRect(50, 550, 200, 50);
-    passedButton2->setRect(50, 350, 200, 50);
+    passedButton1->setRect(90, 580, 160, 50);
+    passedButton2->setRect(80, 450, 170, 50);
     scene->addItem(passedButton1);
     scene->addItem(passedButton2);
     connect(passedButton1, SIGNAL(buttonPressed()), this, SLOT(playerPassed()));
     connect(passedButton2, SIGNAL(buttonPressed()), this, SLOT(opponentPassed()));
 
+    QLabel *bigScoresLabel1 = new QLabel(this);
+    QLabel *bigScoresLabel2 = new QLabel(this);
+    bigScoresLabel1->setGeometry(150, 660, 80, 80);
+    bigScoresLabel2->setGeometry(150, 340, 80, 80);
+    bigScoresLabel1->show();
+    bigScoresLabel2->show();
+    bigScoresLabel1->setText("<font color = yellow size = 12 face = HalisGR-Bold>" +QString::number(player->bigScores)+"</font>");
+    bigScoresLabel2->setText("<font color = yellow size = 12 face = HalisGR-Bold>" +QString::number(opponent->bigScores)+"</font>");
+    connect(player, SIGNAL(roundEnd(QString)), bigScoresLabel1, SLOT(setText(QString)));
+    connect(opponent, SIGNAL(roundEnd(QString)), bigScoresLabel2, SLOT(setText(QString)));
 }
 
 void GameControl::startRound(int round)
@@ -205,17 +226,8 @@ void GameControl::cardSelected(Card *card)
             if(card->level == 4)
             {
                 oneCardIsSelected = true;
-                selectedCard = card;
                 showCardDetails(card);
-
-               /* if(leader != nullptr)
-                    delete leader;
-                leader = card->makeCopy(this);
-                scene->addItem(leader);
-                leader->setPos(180, 685);
-                leader->setScale(0.47);
-                leader->show();
-                deckEditing.leader = leader->cardNumber;*/
+                selectedCard = card;                
             }
             else
             {
@@ -246,20 +258,13 @@ void GameControl::laneSelected(int lane)
 
      // this block should be delete in online mode
 
-
-    Card *tempCard;
     if(player->battleField->enabled == false)
     {
         return;
     }
     if(oneCardIsSelected == true)
     {
-        if(selectedCard->level == 4)
-        {
-            /*deleteCardDetails();
-            oneCardIsSelected = false;*/
-        }
-        else if(lane == selectedCard->lane)
+        if(lane == selectedCard->lane)
         {
             player->hand->removeCard(selectedCard);
             player->battleField->lanes[lane]->addCard(selectedCard);
@@ -331,9 +336,13 @@ void GameControl::playCard(Player *player)
     {
         player->battleField->enabled = true;
         player->setCardsSelectable(true);
-        QEventLoop loop;
-        connect(this ,SIGNAL(playerEndTurn()) , &loop, SLOT(quit()));
-        loop.exec();
+
+        MyTimerLoop myTimerLoop(this);
+        myTimerLoop.setGeometry(1600, 750, 200, 70);
+        myTimerLoop.show();
+        connect(this ,SIGNAL(playerEndTurn()) , &myTimerLoop, SLOT(quit()));
+        myTimerLoop.start(30000);
+
 
         player->battleField->enabled = false;
         player->setCardsSelectable(false);
@@ -368,17 +377,21 @@ void GameControl::countSubTotal()
     if(player->battleField->scores > opponent->battleField->scores)
     {
         player->bigScores ++;
+        emit player->roundEnd("<font color = yellow size = 12 face = HalisGR-Bold>" +QString::number(player->bigScores)+"</font>");
         temp->setText("<font color = white size = 16 face = HalisGR-Bold> You Won This Round!</font>");
     }
     else if(player->battleField->scores < opponent->battleField->scores)
     {
         opponent->bigScores ++;
+        emit opponent->roundEnd("<font color = yellow size = 12 face = HalisGR-Bold>" +QString::number(opponent->bigScores)+"</font>");
         temp->setText("<font color = white size = 16 face = HalisGR-Bold> You lost This Round!</font>");
     }
     else
     {
         player->bigScores ++;
         opponent->bigScores ++;
+        emit player->roundEnd("<font color = yellow size = 12 face = HalisGR-Bold>" +QString::number(player->bigScores)+"</font>");
+        emit opponent->roundEnd("<font color = yellow size = 12 face = HalisGR-Bold>" +QString::number(opponent->bigScores)+"</font>");
         temp->setText("<font color = white size = 16 face = HalisGR-Bold> Even!</font>");
     }
 
@@ -428,5 +441,3 @@ void GameControl::showResult()
 
     delete temp;
 }
-
-
