@@ -18,44 +18,36 @@ class Player: public QObject
 public:
     Player(QObject *parent = 0);
 
-    int cardAmount;
-    Field *deckInGame;
+public:
     Field *graveYard;
+    Field *cardsAvoided; // used when drawing cards
+    Field *deckInGame;    
     Field *hand;
-    BattleField *battleField;
-    Card *card;
+    BattleField *battleField; // melee, ranged, siege
     Card *bigCardWithDetails;
     bool mySide; // true represents player, false represents opponent
     bool passed;
-    int bigScores;
-    Card *leader;
-
+    int bigScores; // round results
+    
 private:
-    Field *cardsAvoided;
+    Card *leader;
     int discardAmount;
 
-
 public:
-    void generateCardsInDeck(Deck *deck, QGraphicsScene *scene);
-    void drawCards_round(int round);
-    void discardCards(int round);
+    void cleanBattleField(); // used after each round
+    void drawCards_round(int round);  // drawing different numbers of cards according to current round
     void drawCards(int times, Field *fieldSource);
-    void setCardsSelectable(bool b); // this is for offline usesage
-    void cleanBattleField();
-
+    void discardCards(int round);
+    void generateCardsInDeck(Deck *deck, QGraphicsScene *scene);
+    void setCardsSelectable(bool b);
 
 private slots:
-    void cardDiscarded(Card *card);
+    void cardDiscarded(Card *card); // to discard one card
 
 signals:
-    void endDiscarding();
-    void discardAmountChanged(QString);
-    void roundEnd(QString);
-
-public slots:
-
-
-public:
+    void endDiscarding(); // emit after finishing discarding
+    void discardAmountChanged(QString); // emit after one card is discarded
+    void roundEnd(QString); // emit after each round
 
 };
 #endif // PLAYER_H

@@ -21,7 +21,9 @@ public:
         power = -1; //None
         cardNumber = 1;
         this->setScale(SCALE);
-
+        name = "<font color = white size = 4 face = HalisGR-Bold>First Light</font>";
+        remark = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold>Special</font>";
+        skill = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold><font color = white><b>Spawn </b></font>Clear Skies or Rally. </font> ";
     }
 
     Card * makeCopy(QObject *parent = nullptr)
@@ -45,6 +47,9 @@ public:
         power = -1; //None
         cardNumber = 2;
         this->setScale(SCALE);
+        name = "<font color = white size = 4 face = HalisGR-Bold>Biting Frost</font>";
+        remark = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold>Biting Frost</font>";
+        skill = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold>Apply Frost to a row on your opponent's side. Frost: Every turn, at the start of your turn, Damage the Lowest Unit on the row by 2. </font> ";
     }
 
     Card * makeCopy(QObject *parent = nullptr)
@@ -68,6 +73,9 @@ public:
         power = -1; //None
         cardNumber = 3;
         this->setScale(SCALE);
+        name = "<font color = white size = 4 face = HalisGR-Bold>Impenetrable Fog</font>";
+        remark = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold>Special, Weather</font>";
+        skill = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold>Apply Fog to a row on your opponent's side. Fog: Every turn, at the start of your turn, Damage the Highest Unit on the row by 2. </font> ";
     }
 
     Card * makeCopy(QObject *parent = nullptr)
@@ -91,6 +99,9 @@ public:
         power = -1; //None
         cardNumber = 4;
         this->setScale(SCALE);
+        name = "<font color = white size = 4 face = HalisGR-Bold>Torrential Rain</font>";
+        remark = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold>Special, Weather</font>";
+        skill = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold>Apply Rain to a row on your opponent's side. Rain: Every turn, at the start of your turn, Damage up to 2 random Units on the row by 1. </font> ";
     }
 
     Card * makeCopy(QObject *parent = nullptr)
@@ -114,6 +125,9 @@ public:
         power = -1; //None
         cardNumber = 5;
         this->setScale(SCALE);
+        name = "<font color = white size = 4 face = HalisGR-Bold>Lacerate</font>";
+        remark = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold>Special, Organic</font>";
+        skill = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold><font color = white><b>Damage</b></font> all Units on a row by 3.</font> ";
     }
 
     Card * makeCopy(QObject *parent = nullptr)
@@ -137,6 +151,9 @@ public:
         power = -1; //Special, None
         cardNumber = 6;
         this->setScale(SCALE);
+        name = "<font color = white size = 4 face = HalisGR-Bold>Thunderbolt Potion</font>";
+        remark = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold>Special, Alchemy</font>";
+        skill = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold>Add 2 Armor to 3 adjacent Units and Boost them by 3. </font> ";
     }
 
     Card * makeCopy(QObject *parent = nullptr)
@@ -160,6 +177,9 @@ public:
         power = -1; //None
         cardNumber = 7;
         this->setScale(SCALE);
+        name = "<font color = white size = 4 face = HalisGR-Bold>Commander's Horn</font>";
+        remark = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold>Special, Tactic</font>";
+        skill = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold><font color = white><b>Boost</b></font> 5 adjacent Units by 4.</font> ";
     }
 
     Card * makeCopy(QObject *parent = nullptr)
@@ -183,6 +203,9 @@ public:
         power = -1; //None
         cardNumber = 8;
         this->setScale(SCALE);
+        name = "<font color = white size = 4 face = HalisGR-Bold>Bekkers Twisted Mirror</font>";
+        remark = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold>Special, Spell</font>";
+        skill = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold>Damage the Highest Unit by an amount equal to its Power, but no more than 10 (ignoring Armor) and Boost the Lowest other Unit by the same amount. </font> ";
     }
 
     Card * makeCopy(QObject *parent = nullptr)
@@ -206,6 +229,9 @@ public:
         power = 5; //None
         cardNumber = 9;
         this->setScale(SCALE);
+        name = "<font color = white size = 4 face = HalisGR-Bold>Geralt: Igni</font>";
+        remark = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold>Witcher</font>";
+        skill = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold><font color = white><b>Deploy:</b></font>Destroy all the Highest Units on the opposite row if that row totals 25 or more Power. </font> ";
     }
 
     Card * makeCopy(QObject *parent = nullptr)
@@ -229,6 +255,9 @@ public:
         power = 6;
         cardNumber = 10;
         this->setScale(SCALE);
+        name = "<font color = white size = 4 face = HalisGR-Bold>Dagon</font>";
+        remark = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold>Leader, Vodyanoi</font>";
+        skill = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold>Doomed, Stubborn. Deploy: Spawn Biting Frost, Impenetrable Fog or Torrential Rain.</font> ";
     }
 
     Card * makeCopy(QObject *parent = nullptr)
@@ -252,6 +281,9 @@ public:
         power = 4;
         cardNumber = 11;
         this->setScale(SCALE);
+        name = "<font color = white size = 4 face = HalisGR-Bold>Foglet</font>";
+        remark = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold>Foglet</font>";
+        skill = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold>Whenever you apply Fog to an opposing row, play a Foglet from your Deck on that row on your side. If there are no Foglets in your Deck, Resurrect a Foglet on that row on your side. When all Fog has been cleared from the Board, Destroy all Foglets. </font> ";
     }
 
     Card * makeCopy(QObject *parent = nullptr)
@@ -275,6 +307,9 @@ public:
         power = 1;
         cardNumber = 12;
         this->setScale(SCALE);
+        name = "<font color = white size = 4 face = HalisGR-Bold>Ge'els</font>";
+        remark = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold>Wild Hunt, Officer</font>";
+        skill = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold><font color = white><b>Deploy:</b></font> Draw the top Gold card and top Silver card from your Deck. Play one and return the other to the top of your Deck. </font> ";
     }
 
     Card * makeCopy(QObject *parent = nullptr)
@@ -298,6 +333,9 @@ public:
         power = 5;
         cardNumber = 13;
         this->setScale(SCALE);
+        name = "<font color = white size = 4 face = HalisGR-Bold>Celaeno Harpy</font>";
+        remark = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold>Beast</font>";
+        skill = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold><font color = white><b>Deploy:</b></font> Spawn 2 Harpy Eggs to the left of this Unit. </font> ";
     }
 
     Card * makeCopy(QObject *parent = nullptr)
@@ -321,6 +359,9 @@ public:
         power = 4;
         cardNumber = 14;
         this->setScale(SCALE);
+        name = "<font color = white size = 4 face = HalisGR-Bold>Roach</font>";
+        remark = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold>Beast</font>";
+        skill = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold>Whenever you play a Gold card from your Hand (note: does not include Leaders), play Roach from your Deck on a random row before that card resolves. </font> ";
     }
 
     Card * makeCopy(QObject *parent = nullptr)
@@ -344,6 +385,9 @@ public:
         power = 5;
         cardNumber = 15;
         this->setScale(SCALE);
+        name = "<font color = white size = 4 face = HalisGR-Bold>Woodland spirit</font>";
+        remark = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold>Relict</font>";
+        skill = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold><font color = white><b>Deploy:</b></font> Spawn 3 Rabid Wolves and apply Fog to the opposite row. </font> ";
     }
 
     Card * makeCopy(QObject *parent = nullptr)
@@ -367,6 +411,9 @@ public:
         power = 6;
         cardNumber = 16;
         this->setScale(SCALE);
+        name = "<font color = white size = 4 face = HalisGR-Bold>Earth Elemental</font>";
+        remark = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold>Construct</font>";
+        skill = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold><font color = white><b>Deploy:</b></font> Give this Unit a Shield. Deathwish: Spawn 2 Lesser Earth Elementals at the end of the row. </font> ";
     }
 
     Card * makeCopy(QObject *parent = nullptr)
@@ -390,6 +437,9 @@ public:
         power = 6;
         cardNumber = 17;
         this->setScale(SCALE);
+        name = "<font color = white size = 4 face = HalisGR-Bold>Crone: Weavess</font>";
+        remark = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold>Mage, Relict</font>";
+        skill = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold><font color = white><b>Deploy:</b></font> Play Brewess and Whispess from your Deck. </font> ";
     }
 
     Card * makeCopy(QObject *parent = nullptr)
@@ -413,6 +463,9 @@ public:
         power = 6;
         cardNumber = 18;
         this->setScale(SCALE);
+        name = "<font color = white size = 4 face = HalisGR-Bold>Crone: Whispess </font>";
+        remark = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold>Mage, Relict</font>";
+        skill = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold><font color = white><b>Deploy:</b></font> Play Brewess and Weavess from your Deck. </font> ";
     }
 
     Card * makeCopy(QObject *parent = nullptr)
@@ -436,6 +489,9 @@ public:
         power = 8;
         cardNumber = 19;
         this->setScale(SCALE);
+        name = "<font color = white size = 4 face = HalisGR-Bold>Crone: Brewess</font>";
+        remark = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold>Mage, Relict</font>";
+        skill = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold><font color = white><b>Deploy:</b></font> Play Whispess and Weavess from your Deck. </font> ";
     }
 
     Card * makeCopy(QObject *parent = nullptr)
@@ -459,6 +515,9 @@ public:
         power = 8;
         cardNumber = 20;
         this->setScale(SCALE);
+        name = "<font color = white size = 4 face = HalisGR-Bold>Archgriffin</font>";
+        remark = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold>Beast</font>";
+        skill = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold><font color = white><b>Deploy:</b></font> Clear Weather from the row on your side. Move a Bronze card from one Graveyard to the other.</font> ";
     }
 
     Card * makeCopy(QObject *parent = nullptr)
@@ -482,6 +541,7 @@ public:
         power = 8;
         cardNumber = 21;
         this->setScale(SCALE);
+        name = "<font color = white size = 4 face = HalisGR-Bold>Wild Hunt Rider</font>";
         remark = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold>Wild Hunt, Soldier</font>";
         skill = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold>Increase by 1 the <font color = white><b>Damage</b></font> dealt by Frost on the opposite row.</font> ";
     }
@@ -507,6 +567,9 @@ public:
         power = 8;
         cardNumber = 22;
         this->setScale(SCALE);
+        name = "<font color = white size = 4 face = HalisGR-Bold>Caranthir</font>";
+        remark = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold>Wild Hunt, Mage</font>";
+        skill = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold><font color = white><b>Deploy:</b></font> Move an <font color = white><b>Enemy</b></font> to this row on its side and apply Frost to that row.</font> ";
     }
 
     Card * makeCopy(QObject *parent = nullptr)
@@ -530,6 +593,9 @@ public:
         power = 12;
         cardNumber = 23;
         this->setScale(SCALE);
+        name = "<font color = white size = 4 face = HalisGR-Bold>Caranthir</font>";
+        remark = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold>Wild Hunt, Mage</font>";
+        skill = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold><font color = white><b>Deploy:</b></font> Move an <font color = white><b>Enemy</b></font> to this row on its side and apply Frost to that row.</font> ";
     }
 
     Card * makeCopy(QObject *parent = nullptr)
@@ -553,6 +619,9 @@ public:
         power = 5;
         cardNumber = 24;
         this->setScale(SCALE);
+        name = "<font color = white size = 4 face = HalisGR-Bold>Caranthir</font>";
+        remark = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold>Wild Hunt, Mage</font>";
+        skill = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold><font color = white><b>Deploy:</b></font> Move an <font color = white><b>Enemy</b></font> to this row on its side and apply Frost to that row.</font> ";
     }
 
     Card * makeCopy(QObject *parent = nullptr)
@@ -576,6 +645,9 @@ public:
         power = 3;
         cardNumber = 25;
         this->setScale(SCALE);
+        name = "<font color = white size = 4 face = HalisGR-Bold>Arachas</font>";
+        remark = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold>Insectoid</font>";
+        skill = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold><font color = white><b>Deploy:</b></font> Play all Arachasae from your Deck. </font> ";
     }
 
     Card * makeCopy(QObject *parent = nullptr)
@@ -598,6 +670,9 @@ public:
         power = 6;
         cardNumber = 26;
         this->setScale(SCALE);
+        name = "<font color = white size = 4 face = HalisGR-Bold>Vran Warrior</font>";
+        remark = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold>Draconid</font>";
+        skill = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold><font color = white><b>Deploy: Consume</b></font> the Unit to the right. Every 2 turns, at the start of your turn, Consume the Unit to the right. </font> ";
     }
 
     Card * makeCopy(QObject *parent = nullptr)
@@ -621,6 +696,9 @@ public:
         power = 6;
         cardNumber = 27;
         this->setScale(SCALE);
+        name = "<font color = white size = 4 face = HalisGR-Bold>Arachas Behemoth</font>";
+        remark = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold>Insectoid</font>";
+        skill = "<font color = #a8a8a8 size = 2 face = HalisGR-Bold>Whenever an Ally Consumes a card, Spawn an Arachas Hatchling on a random row and Damage self by 1 (ignoring Armor). Deploy: Gain 2 Armor. </font> ";
     }
 
     Card * makeCopy(QObject *parent = nullptr)

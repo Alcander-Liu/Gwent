@@ -33,7 +33,6 @@ SOURCES += \
     Account.cpp \
     Deck.cpp \
     BattleField.cpp \
-    Field2.cpp \
     TurnPageButton.cpp \
     CardDataBase.cpp \
     GameControl.cpp \
@@ -49,7 +48,6 @@ HEADERS += \
     Deck.h \
     DeckControl.h \
     BattleField.h \
-    Field2.h \
     TurnPageButton.h \
     GameControl.h \
     MyTimerLoop.h

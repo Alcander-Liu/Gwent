@@ -10,6 +10,10 @@ MyTimerLoop::MyTimerLoop(QWidget *parent) : QWidget(parent)
     connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
 }
 
+
+// set a loop which will quit after msec
+// it can also be quit by calling quit()
+// it updates and shows the remaining time every half sec
 void MyTimerLoop::start(unsigned int msec)
 {
     int halfsec = msec/500;

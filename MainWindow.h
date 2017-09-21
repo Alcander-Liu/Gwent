@@ -2,23 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "Card.h"
 #include "DeckControl.h"
-#include "Field.h"
-#include "BattleField.h"
-#include "Player.h"
-#include "QStackedWidget"
-#include <QGraphicsScene>
-#include <QGraphicsView>
-#include <QGraphicsPixmapItem>
-#include <QGraphicsItem>
-#include <QPixmap>
 #include "GameControl.h"
-#include <QFile>
-#include <QDir>
-#include <QDataStream>
-#include <QDebug>
-#include <QSize>
 
 namespace Ui {
 class MainWindow;
@@ -35,25 +20,19 @@ public:
 private:
     Ui::MainWindow *ui;
 
-public:
+private:
     QGraphicsScene *scene;
     QGraphicsView *view;
-    int status;
     DeckControl *deckControl;
     GameControl *gameControl;
     Account *account;
-//    MutiModeControl mutiModeControl;
-//    MenuControl menuControl;
- //   AIModeControl aIModeControl;
- //   SettingControl settingControl;
-
 
 signals:
     void exit();
 
 public slots:
     void goToDeck();
-    void goToMultiMode();
+    void goToGame();
 };
 
 #endif // MAINWINDOW_H

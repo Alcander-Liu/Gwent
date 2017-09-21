@@ -74,7 +74,7 @@ int Deck::at(int index) // return cardNumber at map[index];
                 return iter.key();
         }
     }
-    else
-        return -1;
+
+    return -1;
 }
 

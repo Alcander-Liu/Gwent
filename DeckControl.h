@@ -40,6 +40,7 @@ private:
     Deck deckEditing;    
     QLabel *remark;
     QLabel *skill;
+    QLabel *name;
     QLabel *goldUsage;
     QLabel *silverUsage;
     QLabel *bronzeUsage;

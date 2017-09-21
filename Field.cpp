@@ -3,7 +3,7 @@
 Field::Field(QObject *parent):QObject(parent)
 {
     cardAmount = 0;
-    weathered = 0;
+    weathered = false;
     scores = 0;
 }
 
@@ -35,8 +35,8 @@ Card* Field::at(int index)
                 return iter.value();
         }
     }
-    else
-        return nullptr;
+
+    return nullptr;
 }
 
 void Field::adjustCardsPosition_DeckControl(int fieldType)
@@ -46,7 +46,7 @@ void Field::adjustCardsPosition_DeckControl(int fieldType)
     int i = 0;
     Card *temp;
 
-    if(fieldType != 0)
+    if(fieldType != 0) // melee, ranged, siege
     {
         if(cardAmount <11)
         {
@@ -67,7 +67,7 @@ void Field::adjustCardsPosition_DeckControl(int fieldType)
             }
         }
     }
-    else
+    else // special
     {
         if(cardAmount <11)
             for(QMultiMap<int, Card*>::iterator iter = cardToCardPtr.begin(); iter != cardToCardPtr.end(); iter++)
@@ -83,9 +83,7 @@ void Field::adjustCardsPosition_DeckControl(int fieldType)
                 temp->setPos(450 + i*900.0/cardAmount, 515);
                 i++;
             }
-
     }
-
 }
 
 void Field::adjustCardsPosition_Game(int fieldType, bool mySide)
@@ -96,14 +94,14 @@ void Field::adjustCardsPosition_Game(int fieldType, bool mySide)
     Card *temp;
     if(mySide == true) // for player
     {
-        if(fieldType == 0)
+        if(fieldType == 0) // hand
             for(QMultiMap<int, Card*>::iterator iter = cardToCardPtr.begin(); iter != cardToCardPtr.end(); iter++)
             {
                 temp = iter.value();
                 temp->setPos(centralX - cardAmount*50 + 100*i, 880);
                 i++;
             }
-        else
+        else  // melee, ranged, siege
         {
             for(QMultiMap<int, Card*>::iterator iter = cardToCardPtr.begin(); iter != cardToCardPtr.end(); iter++)
             {
@@ -115,14 +113,14 @@ void Field::adjustCardsPosition_Game(int fieldType, bool mySide)
     }
     else // for opponent
     {
-        if(fieldType == 0)
+        if(fieldType == 0) // hand
             for(QMultiMap<int, Card*>::iterator iter = cardToCardPtr.begin(); iter != cardToCardPtr.end(); iter++)
             {
                 temp = iter.value();
                 temp->setPos(centralX - cardAmount*50 + 100*i, 50);
                 i++;
             }
-        else
+        else // melee, ranged, siege
         {
             for(QMultiMap<int, Card*>::iterator iter = cardToCardPtr.begin(); iter != cardToCardPtr.end(); iter++)
             {
@@ -145,7 +143,7 @@ int Field::countScores()
     }
     scores = tempScores;
     emit scoresChanged("<font color = white size = 10 face = HalisGR-Bold>" +QString::number(scores)+"</font>");
-    return tempScores;
+    return scores;
 }
 
 void Field::setCardsSelectable(bool b)
@@ -157,7 +155,6 @@ void Field::setCardsSelectable(bool b)
         tempCard->selectable = b;
     }
 }
-
 
 void Field::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {

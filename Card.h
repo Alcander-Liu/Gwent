@@ -29,16 +29,11 @@ public:
     int cardNumber;
     QString remark;
     QString skill;
+    QString name;
     bool selectable = false;
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
-
-public:
-    virtual Card * makeCopy(QObject *parent = nullptr)
-    {
-        return nullptr;
-    }
     
 signals:
     void cardPressed(Card *);

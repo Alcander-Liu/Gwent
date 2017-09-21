@@ -3,26 +3,22 @@
 
 #include "Card.h"
 #include <QGraphicsRectItem>
-#include <QWidget>
-#include <QRect>
 #include <QMultiMap>
 
 class Field: public QObject, public QGraphicsRectItem
 {
     Q_OBJECT
 public:
-    explicit Field(QObject *parent = nullptr);
+    Field(QObject *parent = nullptr);
 
 public:
     bool weathered;
     bool selectable;
     int scores;
-
-
-
+    
 private:
-    int cardAmount;
-    QMultiMap<int, Card*> cardToCardPtr;
+    int cardAmount; 
+    QMultiMap<int, Card*> cardToCardPtr; //<cardNumber, card object>
 
 signals:
    void fieldPressed();
@@ -33,12 +29,12 @@ protected:
 
 public:
     void addCard(Card *card);
-    void removeCard(Card *card);
+    virtual int countScores();
     void adjustCardsPosition_DeckControl(int fieldType);
     void adjustCardsPosition_Game(int fieldType, bool mySide);
     Card* at(int index);
-    int getCardAmount(){ return cardAmount;}
-    virtual int countScores();
+    int getCardAmount(){ return cardAmount; }
+    void removeCard(Card *card);
     void setCardsSelectable(bool b);
 
 };

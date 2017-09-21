@@ -5,14 +5,11 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-
     ui->setupUi(this);
-
     this->setCentralWidget(ui->menuWidget);
 
-
     connect(ui->deckButton, SIGNAL(clicked(bool)), this, SLOT(goToDeck()));
-    connect(ui->multiModeButton, SIGNAL(clicked(bool)), this, SLOT(goToMultiMode()));
+    connect(ui->multiModeButton, SIGNAL(clicked(bool)), this, SLOT(goToGame()));
     connect(ui->exitButton, SIGNAL(clicked(bool)), this, SLOT(close()));
 
     account = new Account(this);
@@ -34,9 +31,10 @@ void MainWindow::goToDeck()
     ui->menuWidget->show();
 }
 
-void MainWindow::goToMultiMode()
+void MainWindow::goToGame()
 {
     ui->menuWidget->hide();
+    
     gameControl = new GameControl(account, this);
     delete gameControl;
 

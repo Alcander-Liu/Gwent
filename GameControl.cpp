@@ -15,6 +15,8 @@ GameControl::GameControl(Account *account, QWidget *parent) : QWidget(parent)
 void GameControl::buildChooseDeckUI()
 {
     QWidget chooseDeckUI(this);
+
+    // construct decks buttons
     QSignalMapper *m = new QSignalMapper(&chooseDeckUI);
     QPushButton *pushButton;
     for(int i = 0; i<5; i++)
@@ -33,6 +35,8 @@ void GameControl::buildChooseDeckUI()
 
     chooseDeckUI.show();
 
+    // wait for user to choose a deck to start the game
+    // quit if the user clicks back or the game ends
     QEventLoop loop;
     connect(pushButton, SIGNAL(clicked(bool)), &loop, SLOT(quit()));
     connect(this, SIGNAL(exit()), &loop, SLOT(quit()));
@@ -60,28 +64,28 @@ void GameControl::startGame(int deckNumber)
     view->show();
 
 
-    initializeDeck(deckNumber); //shuffle the cards and decide who fist;
-    for(int i = 1; i<4; i++)
+    initializeDeck(deckNumber); // generate cards and construct buttons and labels
+    for(int i = 1; i<4; i++) // 2~3 rounds
     {
         startRound(i);
         if(gameEnd() == true)
             break;
     }
     showResult();
-    emit exit();
+    emit exit(); // quit loop
 }
 
 void GameControl::initializeDeck(int deckNumber)
 {
     player = new Player(this);
-    player->mySide = true;
+    player->mySide = true;  // to differentiate the player and the opponent within the Player class
     opponent = new Player(this);
-    opponent->mySide = false;
+    opponent->mySide = false;  // to differentiate the player and the opponent within the Player class
     player->generateCardsInDeck(account->deck[deckNumber], scene);
     opponent->generateCardsInDeck(account->deck[deckNumber], scene);
 
+    // contruct 6 selectable lanes
     QSignalMapper *m = new QSignalMapper(this);
-
     for(int i = 1; i<4; i++)
     {
         player->battleField->lanes[i]->setRect(450, 450+i*100, 1020, 96);
@@ -89,7 +93,6 @@ void GameControl::initializeDeck(int deckNumber)
         connect(player->battleField->lanes[i], SIGNAL(fieldPressed()), m, SLOT(map()));
         m->setMapping(player->battleField->lanes[i], i);
     }
-
     for(int i = 4; i<7; i++)
     {
         player->battleField->lanes[i]->setRect(450, 840-i*100, 1020, 96);
@@ -97,16 +100,15 @@ void GameControl::initializeDeck(int deckNumber)
         connect(player->battleField->lanes[i], SIGNAL(fieldPressed()), m, SLOT(map()));
         m->setMapping(player->battleField->lanes[i], i);
     }
-
     connect(m, SIGNAL(mapped(int)), this, SLOT(laneSelected(int)));
 
+    // construct 8 labels to show scores
     QLabel *playersScores[8];
     for(int i = 0; i<8; i++)
     {
         playersScores[i] = new QLabel(this);
         playersScores[i]->show();
     }
-
     playersScores[0]->setGeometry(300, 670, 80, 80);
     connect(player->battleField, SIGNAL(scoresChanged(QString)), playersScores[0], SLOT(setText(QString)));
     for(int i = 1; i<4; i++)
@@ -124,6 +126,7 @@ void GameControl::initializeDeck(int deckNumber)
     player->battleField->countScores();
     opponent->battleField->countScores();
 
+    //construct two labels to show remaining times of discarding
     discardAmountLabel[0] = new QLabel(this);
     discardAmountLabel[1] = new QLabel(this);
     discardAmountLabel[0]->setGeometry(110, 800, 50, 50);
@@ -133,6 +136,7 @@ void GameControl::initializeDeck(int deckNumber)
     connect(player, SIGNAL(discardAmountChanged(QString)), discardAmountLabel[0], SLOT(setText(QString)));
     connect(opponent, SIGNAL(discardAmountChanged(QString)), discardAmountLabel[1], SLOT(setText(QString)));
 
+    //construct two buttons to skip discarding
     TurnPageButton *finishDiscardingButton1 = new TurnPageButton(this);
     TurnPageButton *finishDiscardingButton2 = new TurnPageButton(this);
     finishDiscardingButton1->setRect(30, 780, 330, 50);
@@ -142,12 +146,14 @@ void GameControl::initializeDeck(int deckNumber)
     connect(finishDiscardingButton1, SIGNAL(buttonPressed()), player, SIGNAL(endDiscarding()));
     connect(finishDiscardingButton2, SIGNAL(buttonPressed()), opponent, SIGNAL(endDiscarding()));
 
+    // construct a label to show whose turn to play
     whoseTurnLabel = new QLabel(this);
     whoseTurnLabel->setGeometry(10, 495, 450, 80);
     whoseTurnLabel->setAlignment(Qt::AlignCenter);
     whoseTurnLabel->show();
     connect(this, SIGNAL(turnChanged(QString)), whoseTurnLabel, SLOT(setText(QString)));
 
+    // construct two buttons to passed
     TurnPageButton *passedButton1 = new TurnPageButton(this);
     TurnPageButton *passedButton2 = new TurnPageButton(this);
     passedButton1->setRect(90, 580, 160, 50);
@@ -157,6 +163,7 @@ void GameControl::initializeDeck(int deckNumber)
     connect(passedButton1, SIGNAL(buttonPressed()), this, SLOT(playerPassed()));
     connect(passedButton2, SIGNAL(buttonPressed()), this, SLOT(opponentPassed()));
 
+    // construct two labels to show big scores
     QLabel *bigScoresLabel1 = new QLabel(this);
     QLabel *bigScoresLabel2 = new QLabel(this);
     bigScoresLabel1->setGeometry(150, 660, 80, 80);
@@ -171,28 +178,29 @@ void GameControl::initializeDeck(int deckNumber)
 
 void GameControl::startRound(int round)
 {
-    myTurn = true;
+    myTurn = true; // always start with the player(user)
     oneCardIsSelected = false;
     player->passed = false;
     opponent->passed = false;
 
     player->drawCards_round(round);
-    opponent->drawCards_round(round);  // This line should be deleted in online mode.
+    opponent->drawCards_round(round);
     player->discardCards(round);
-    opponent->discardCards(round);  // This line should be deleted in online mode.
+    opponent->discardCards(round);
 
-    for(int i = 0; i < player->hand->getCardAmount(); i++)  // This should be deleted in online mode.
+    // reset connections
+    for(int i = 0; i < player->hand->getCardAmount(); i++)
     {
         disconnect(player->hand->at(i), SIGNAL(cardPressed(Card*)), this, SLOT(cardSelected(Card*)));
         connect(player->hand->at(i), SIGNAL(cardPressed(Card*)), this, SLOT(cardSelected(Card*)));
     }
-
-    for(int i = 0; i < opponent->hand->getCardAmount(); i++)  // This should be deleted in online mode.
+    for(int i = 0; i < opponent->hand->getCardAmount(); i++)
     {
         disconnect(opponent->hand->at(i), SIGNAL(cardPressed(Card*)), this, SLOT(cardSelected(Card*)));
         connect(opponent->hand->at(i), SIGNAL(cardPressed(Card*)), this, SLOT(cardSelected(Card*)));
     }
 
+    // start to play cards
     while(true)
     {
         if(myTurn == true)
@@ -204,15 +212,13 @@ void GameControl::startRound(int round)
             playCard(opponent);
         }
         if(player->passed == true && opponent->passed == true)
-            break;
+            break; // end this round
     }
 
     countSubTotal();
     player->cleanBattleField();
     opponent->cleanBattleField();
 }
-
-
 
 void GameControl::cardSelected(Card *card)
 {
@@ -221,20 +227,11 @@ void GameControl::cardSelected(Card *card)
 
     if(oneCardIsSelected == false)
     {
-        if(card->field == -1)
+        if(card->field == -1) // only cards in hand can be selected
         {
-            if(card->level == 4)
-            {
-                oneCardIsSelected = true;
-                showCardDetails(card);
-                selectedCard = card;                
-            }
-            else
-            {
-                oneCardIsSelected = true;
-                showCardDetails(card);
-                selectedCard = card;
-            }
+            oneCardIsSelected = true;
+            showCardDetails(card);
+            selectedCard = card;
         }
     }
     else
@@ -246,17 +243,16 @@ void GameControl::cardSelected(Card *card)
 
 void GameControl::laneSelected(int lane)
 {
-     // this block should be delete in online mode
-        Player *player;
-        if(myTurn == false)
-        {
-            lane -= 3;
-            player = opponent;
-        }
-        else
-            player = this->player;
 
-     // this block should be delete in online mode
+     Player *player;
+    if(myTurn == false)
+    {
+        lane -= 3;
+        player = opponent;
+    }
+    else
+        player = this->player;
+
 
     if(player->battleField->enabled == false)
     {
@@ -266,12 +262,12 @@ void GameControl::laneSelected(int lane)
     {
         if(lane == selectedCard->lane)
         {
+            // move the card from hand to battle field
             player->hand->removeCard(selectedCard);
             player->battleField->lanes[lane]->addCard(selectedCard);
             selectedCard->field = lane;
             player->hand->adjustCardsPosition_Game(0, player->mySide);
             player->battleField->lanes[lane]->adjustCardsPosition_Game(lane, player->mySide);
-            //selectedCard->used(lane);
             player->battleField->countScores();
             deleteCardDetails();
             oneCardIsSelected = false;
@@ -279,12 +275,12 @@ void GameControl::laneSelected(int lane)
         }
         else if(selectedCard->lane == -1 )
         {
+            // move the card from hand to battle field
             player->hand->removeCard(selectedCard);
             player->battleField->lanes[lane]->addCard(selectedCard);
             selectedCard->field = lane;
             player->hand->adjustCardsPosition_Game(0, player->mySide);
             player->battleField->lanes[lane]->adjustCardsPosition_Game(lane, player->mySide);
-            //selectedCard->used(lane);
             player->battleField->countScores();
             deleteCardDetails();
             oneCardIsSelected = false;
@@ -301,18 +297,23 @@ void GameControl::laneSelected(int lane)
 
 void GameControl::showCardDetails(Card *card)
 {
-    bigCardWithDetails = card->makeCopy(this);
-    bigCardWithDetails->setScale(1.3);
-    bigCardWithDetails->setPos(1500, 100);
+    bigCardWithDetails = newCard(card->cardNumber, this);
+    bigCardWithDetails->setScale(1.2);
+    bigCardWithDetails->setPos(1500, 200);
+    name = new QLabel(this);
+    name->setText(bigCardWithDetails->name);
+    name->show();
+    name->setGeometry(1580, 200, 280, 100);
+    name->setAlignment(Qt::AlignTop);
     remark = new QLabel(this);
     remark->setText(bigCardWithDetails->remark);
     remark->show();
-    remark->setGeometry(1600, 600, 280, 100);
+    remark->setGeometry(1600, 690, 280, 100);
     remark->setAlignment(Qt::AlignTop);
     skill = new QLabel(this);
     skill->setText(bigCardWithDetails->skill);
     skill->show();
-    skill->setGeometry(1600, 640, 280, 400);
+    skill->setGeometry(1600, 730, 280, 400);
     skill->setWordWrap(true);
     skill->setAlignment(Qt::AlignTop);
     scene->addItem(bigCardWithDetails);
@@ -323,6 +324,7 @@ void GameControl::deleteCardDetails()
     delete bigCardWithDetails;
     delete remark;
     delete skill;
+    delete name;
 }
 
 void GameControl::playCard(Player *player)
@@ -338,11 +340,10 @@ void GameControl::playCard(Player *player)
         player->setCardsSelectable(true);
 
         MyTimerLoop myTimerLoop(this);
-        myTimerLoop.setGeometry(1600, 750, 200, 70);
+        myTimerLoop.setGeometry(1700, 750, 200, 70);
         myTimerLoop.show();
         connect(this ,SIGNAL(playerEndTurn()) , &myTimerLoop, SLOT(quit()));
-        myTimerLoop.start(30000);
-
+        myTimerLoop.start(30000); // count down 30 secs
 
         player->battleField->enabled = false;
         player->setCardsSelectable(false);
@@ -399,7 +400,7 @@ void GameControl::countSubTotal()
     QTimer timer;
     timer.setSingleShot(true);
     connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
-    timer.start(2000);
+    timer.start(2000); // show result for 2 secs
     loop.exec();
 
     delete temp;
@@ -436,7 +437,7 @@ void GameControl::showResult()
     QTimer timer;
     timer.setSingleShot(true);
     connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
-    timer.start(4000);
+    timer.start(4000); // show result for 4 secs
     loop.exec();
 
     delete temp;

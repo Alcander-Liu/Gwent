@@ -15,7 +15,6 @@
 #include <QTimer>
 #include <QMessageBox>
 #include "MyTimerLoop.h"
-#include <QGraphicsTextItem>
 
 namespace Ui {
 class gameControl;
@@ -25,7 +24,7 @@ class GameControl : public QWidget
 {
     Q_OBJECT
 public:
-    explicit GameControl(Account *account, QWidget *parent = nullptr);
+    GameControl(Account *account, QWidget *parent = nullptr);
 
 signals:
     void playerEndTurn();
@@ -40,32 +39,32 @@ private slots:
     void opponentPassed();
 
 private:
-    Player *player;
-    Player *opponent;
-    Ui::gameControl *ui;
     Account *account;
+    Card *bigCardWithDetails;
+    QLabel *discardAmountLabel[2];
+    Card *leader = nullptr;
+    bool myTurn;  // true: player's turn   fasle: opponent's turn
     bool oneCardIsSelected;
+    Player *opponent;
+    Player *player;
+    Ui::gameControl *ui;
+    QLabel *remark;
+    QLabel *skill;
+    QLabel *name;
     Card *selectedCard;
     QGraphicsScene *scene;
     QGraphicsView *view;
-    Card *bigCardWithDetails;
-    QLabel *remark;
-    QLabel *skill;
-    Card *leader = nullptr;
-    QLabel *discardAmountLabel[2];
     QLabel *whoseTurnLabel;
-    bool myTurn; // true: player's turn   fasle: opponent's turn
 
 private:
-
     void buildChooseDeckUI();
+    void countSubTotal();
+    void deleteCardDetails();
+    bool gameEnd();
     void initializeDeck(int deckNumber);
+    void playCard(Player *player);
     void startRound(int round);
     void showCardDetails(Card *card);
-    void deleteCardDetails();
-    void playCard(Player *player);
-    void countSubTotal();
-    bool gameEnd();
     void showResult();
 
 };

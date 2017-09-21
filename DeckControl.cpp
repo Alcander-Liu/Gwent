@@ -204,7 +204,7 @@ void DeckControl::cardSelected(Card *card)
 
             if(leader != nullptr)
                 delete leader;
-            leader = card->makeCopy(this);
+            leader = newCard(card->cardNumber);
             scene->addItem(leader);
             leader->setPos(180, 685);
             leader->setScale(0.47);
@@ -262,7 +262,7 @@ void DeckControl::newToLane(Card *card, int lane)
     deckEditing.addCard(card, lane);
     updateUsageLabel();
 
-    Card *temp = card->makeCopy(battleField);
+    Card *temp = newCard(card->cardNumber, battleField);
     temp->field = lane;  // record current field(place)
     connect(temp, SIGNAL(cardPressed(Card*)), this, SLOT(cardSelected(Card*)));
     battleField->lanes[lane]->addCard(temp);
@@ -339,18 +339,23 @@ void DeckControl::turnRightPage()
 
 void DeckControl::showCardDetails(Card *card)
 {
-    bigCardWithDetails = card->makeCopy(this);
-    bigCardWithDetails->setScale(1.3);
-    bigCardWithDetails->setPos(1500, 100);
+    bigCardWithDetails = newCard(card->cardNumber, this);
+    bigCardWithDetails->setScale(1.2);
+    bigCardWithDetails->setPos(1500, 200);
+    name = new QLabel(this);
+    name->setText(bigCardWithDetails->name);
+    name->show();
+    name->setGeometry(1580, 200, 280, 100);
+    name->setAlignment(Qt::AlignTop);
     remark = new QLabel(this);
     remark->setText(bigCardWithDetails->remark);
     remark->show();
-    remark->setGeometry(1600, 600, 280, 100);
+    remark->setGeometry(1600, 690, 280, 100);
     remark->setAlignment(Qt::AlignTop);
     skill = new QLabel(this);
     skill->setText(bigCardWithDetails->skill);
     skill->show();
-    skill->setGeometry(1600, 640, 280, 400);
+    skill->setGeometry(1600, 730, 280, 400);
     skill->setWordWrap(true);
     skill->setAlignment(Qt::AlignTop);
     scene->addItem(bigCardWithDetails);
@@ -361,6 +366,7 @@ void DeckControl::deleteCardDetails()
     delete bigCardWithDetails;
     delete remark;
     delete skill;
+    delete name;
 }
 
 void DeckControl::retrieveFromDeck(Card *card)
