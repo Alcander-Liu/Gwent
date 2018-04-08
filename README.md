@@ -13,6 +13,7 @@ A game project from the GUI programming course, mimicing the card game Gwent, de
 
 ## 2. 程序运行主要流程
 此程序是一层一层深入函数的概念，往往利用`QEventLoop`将函数暂停而不退出，以在当下函数位置等待用户的操作信号。只有当用户给入信号，才会前进或后退(往下层函数深入或向上层函数退出)。
+![Alt text](./ProcessLogic.jpg?raw=true "Title")
 
 ## 3. 游戏操作方法
   1. 首页
